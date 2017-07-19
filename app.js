@@ -5,6 +5,16 @@ $(document).ready(function(){
 // add info button
 
 
+function init(){
+  buildSheet();
+  buildAnswerArray();
+  addEventListeners();
+} 
+
+init();
+
+
+
     var data = [
         {
         title: "Coquette (medium)",  
@@ -83,7 +93,7 @@ $(document).ready(function(){
       console.log($(".lead-sheet").html());
     }
 
-    buildSheet();
+    
 
 
 //handle button change song
@@ -117,7 +127,7 @@ $(document).ready(function(){
       console.log(answer);
     };  
 
-    buildAnswerArray();
+    
 
 
 
@@ -165,7 +175,7 @@ function addEventListeners(){
 
 }
 
-addEventListeners();
+
 
 
   
@@ -196,7 +206,7 @@ addEventListeners();
     function isAnswerCorrect(sheet, answer) {return sheet.chord == answer.chord && sheet.exten == answer.exten}
     function isAnswerAlmostCorrect(sheet, answer){return sheet.chord == answer.chord && sheet.exten !== answer.exten}
 
-   function markAs(status, i) {
+   function markAs(status) {
            $("#"+i).removeClass("almostCorrect");
             $("#"+i).removeClass("wrong");
             $("#"+i).removeClass("correct");
@@ -213,13 +223,11 @@ addEventListeners();
        console.log("answer exten " + i + " " + answer[i].exten);*/
        
         if(isAnswerCorrect(currentSheet, currentAnswer)){
-          markAs("correct", i);
-        } else if (isAnswerAlmostCorrect(currentSheet, currentAnswer)){
-          markAs("almostCorrect", i);
-           
+          markAs("correct");
+        } else if (isAnswerAlmostCorrect(currentSheet, currentAnwser)){
+            markAs("almostCorrect");  
         } else {
-          //console.log(i);
-          markAs("wrong", i);
+          markAs("wrong");
         }
       }
     }
