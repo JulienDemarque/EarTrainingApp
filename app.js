@@ -131,7 +131,7 @@ $(document).ready(function(){
 //event listeners for input buttons
 function addEventListeners(){
     $(".cell").click(function(){
-      $(".rooty").removeClass("onFocus");
+      $(".rooty").removeClass("oncus");
       $(".extension").removeClass("onFocus");
       $(".cell").removeClass("onFocus");
       $(".cell").removeClass("selected");
