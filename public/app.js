@@ -75,7 +75,7 @@ $(document).ready(function(){
           var html = $(".lead-sheet").html();
           var num = i+1;
           var numString = num.toString();
-          $(".lead-sheet").html(html + "<div class = 'divided cell'><div class= 'diagonal'></div> <div id='"+ i +"' tabindex='-1'  class='topLeft'></div> <div id='"+ numString +"' tabindex='-1'  class='bottomRight'></div></div>");
+          $(".lead-sheet").html(html + "<div class = 'box'><div class= 'diagonal'></div> <div id='"+ i +"' tabindex='-1'  class='divided topLeft cell'></div> <div id='"+ numString +"' tabindex='-1'  class='divided bottomRight cell'></div></div>");
           i++;
         }
       }
@@ -192,15 +192,18 @@ addEventListeners();
     $("#check").click(function(){
       checkAnswer();
     });
+
     function isAnswerCorrect(sheet, answer) {return sheet.chord == answer.chord && sheet.exten == answer.exten}
     function isAnswerAlmostCorrect(sheet, answer){return sheet.chord == answer.chord && sheet.exten !== answer.exten}
 
-   function markAs(status, i) {
-           $("#"+i).removeClass("almostCorrect");
+    function markAs(status, i) {
+
+            $("#"+i).removeClass("almostCorrect");
             $("#"+i).removeClass("wrong");
             $("#"+i).removeClass("correct");
             $("#"+i).addClass(status);
           }
+
     function checkAnswer(){
       for (i=0; i<song.sheet.length; i++){
         const currentSheet = song.sheet[i];

@@ -9,6 +9,14 @@ body{
   text-align: center;
 }
 
+a{
+   cursor:pointer;
+}
+
+h1{
+  margin-top: 100px;
+}
+
 div {
   margin: 0;
   padding: 0;
@@ -47,6 +55,21 @@ div {
 box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.box {
+  
+    position: relative;
+    float: left;
+    border: 1px solid black;
+    overflow: hidden;
+    text-align: center;
+    height: 72px;
+    width: 12.5%;
+  
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
 .cell:hover{
   cursor:pointer; 
 }
@@ -55,6 +78,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 .divided {
   font-size: 20px;
   line-height: 36px;
+  border: none;
 }
 
 .diagonal{
@@ -76,6 +100,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
     width: 46px;
     margin: 0;
     padding: 0; 
+    overflow:  visible;
 }
 
 .bottomRight{
@@ -86,6 +111,14 @@ box-sizing: border-box;         /* Opera/IE 8+ */
     right: 0;
     width: 48px;
 }
+
+/*.top-triangle{
+  position absolute;
+  width:100px;
+  height:72px;
+  background: brown;
+ 
+} */
 
 .supsub {
     display: inline-block;
