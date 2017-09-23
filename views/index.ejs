@@ -17,14 +17,24 @@
 
 
   	<h1>Chord Progression Ear Trainer</h1>
+  	<br/>
 
-  		<audio controls>
-			  <source src="./audio/belev.mp3" type="audio/mp3" >
+  		<audio  id="audio" controls>
+			  <source src="" type="audio/mp3" >
 			  
 			  Your browser does not support the audio element.
 		</audio>
-  
-	  	<button id="changeBtn">New Song <i class="fa fa-refresh" aria-hidden="true"></i></button>
+  		
+  		<div class="mode-select"
+	 		<div class="form-group">
+				      <label for="sel1">Mode / Difficulty</label>
+				      <select class="form-control" id="sel1">
+				        <option>Swing Beginner </option>
+				      </select>
+			</div>
+		</div>
+	  	
+	  	<h3 id="song-title"></h3>
 	  	<h3>KEY : <span id="key"></span></h3>
 		<h5>Select the bar...</h5>
 		  
@@ -33,20 +43,21 @@
 		    
 		</div> 
   
+  <div class= "controls">
 	  	<div class= "selection">
 		    <h5>...Guess the chord...</h5>
 		    <div class= "root">
-		      <div  class="rooty">C</div>
-		      <div class="rooty">Db</div>
+		      <div class="rooty">C</div>
+		      <div class="rooty">C#/Db</div>
 		      <div class="rooty">D</div>
-		      <div class="rooty">Eb</div>
+		      <div class="rooty">D#/Eb</div>
 		      <div class="rooty">E</div>
 		      <div class="rooty">F</div>
-		      <div class="rooty">Gb</div>
+		      <div class="rooty">F#/Gb</div>
 		      <div class="rooty">G</div>
-		      <div class="rooty">Ab</div>
+		      <div class="rooty">G#/Ab</div>
 		      <div class="rooty">A</div>
-		      <div class="rooty">Bb</div>
+		      <div class="rooty">A#/Bb</div>
 		      <div class="rooty">B</div>
 		    </div>  
 		    
@@ -56,10 +67,18 @@
 		       <div class="extension">maj6</div>
 		       <div class="extension">maj69</div>
 		       <div class="extension">7</div>
+		       <div class="extension">9</div>
+		       <div class="extension">min</div>
 		       <div class="extension">min7</div>
+		       <div class="extension">min6</div>
+		       <div class="extension">dim7</div>
 		    </div>  
 	  	</div>  
-  	<button id="check">Check Yourself</button>
-  	<button id="showAnswer">Show Answer</button>
+	  	
+	  		<button id="changeBtn">New Song <i class="fa fa-refresh" aria-hidden="true"></i></button>
+		  	<button id="check">Check Yourself</button>
+		  	<button id="showAnswer">Show Answer</button>
+
+  		</div>
   </body>
 </html>
