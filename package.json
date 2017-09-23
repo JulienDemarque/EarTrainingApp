@@ -1,5 +1,5 @@
 {
-  "name": "Chord progression App",
+  "name": "chord progression app",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
