@@ -1,6 +1,10 @@
 {
   "name": "Chord progression App",
   "version": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4"
