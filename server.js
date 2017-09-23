@@ -15,7 +15,10 @@ app.get("/chordapp", function(req, res) {
   res.render('index.ejs');
 });
 
-http.createServer(app).listen(8080, function(){
+/*http.createServer(app).listen(8080, function(){
 	console.log("server running");
-});
+});*/
 
+app.listen(process.env.PORT, process.env.IP, function(){
+    console.log("server started")
+});
