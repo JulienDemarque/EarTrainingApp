@@ -15,7 +15,10 @@ a{
 }
 
 h1{
+  padding: 8px;
   margin-top: 100px;
+  background-color: rgb(95, 134, 142);
+  color: white;
 }
 
 div {
@@ -216,6 +219,8 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 button{
+  background-color: rgb(232, 197, 122);
+  border-color: rgb(220, 177, 102);
   font-family: "My Custom Font";
   margin: 10px auto;
   display: block;
@@ -232,11 +237,10 @@ button:hover{
 }
 
 .controls{
-  margin: 5px auto;
-  width: 600px;
-  border: 2px solid gray;
+  margin: 5px -15px;
+  border: 2px solid rgb(95, 134, 142);
   border-radius: 10px;
-  padding: 10px;
+  padding: 15px;
 }
 
 .controls > button{
@@ -244,8 +248,11 @@ button:hover{
 }
 
 .mode-select{
-  position: absolute;
   width: 200px;
-  right: 20px;
-  top: 20px;
+  margin: 5px auto;
+}
+
+.col-md-4{
+  border-radius: 10px;
+  border: 2px solid rgb(95, 134, 142);
 }

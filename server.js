@@ -19,6 +19,6 @@ app.get("/chordapp", function(req, res) {
 	console.log("server running");
 });*/
 
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(process.env.PORT || 8080, process.env.IP, function(){
     console.log("server started")
 });
