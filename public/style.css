@@ -22,8 +22,6 @@ h1{
 }
 
 div {
-  margin: 0;
-  padding: 0;
   display: block;
   text-align: center;
   
@@ -219,7 +217,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 button{
-  background-color: rgb(232, 197, 122);
+  background-color: white;
   border-color: rgb(220, 177, 102);
   font-family: "My Custom Font";
   margin: 10px auto;
@@ -233,11 +231,13 @@ button:focus {
 }
 
 button:hover{
+  background-color: rgb(232, 197, 122);
   cursor:pointer; 
 }
 
 .controls{
-  margin: 5px -15px;
+  height: 260px;
+  margin: 0px 5px 5px -15px;
   border: 2px solid rgb(95, 134, 142);
   border-radius: 10px;
   padding: 15px;
@@ -253,6 +253,16 @@ button:hover{
 }
 
 .col-md-4{
+  padding: 15px;
+  margin-top: 0px;
   border-radius: 10px;
   border: 2px solid rgb(95, 134, 142);
+}
+
+.extra-info{
+  height: 260px;
+}
+
+.row{
+  margin-bottom: 15px;
 }
