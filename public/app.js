@@ -56,6 +56,7 @@ $(document).ready(function(){
 
     function resetData(){
     $("#song-title").text("");	
+    $("#pdf").empty();
       answer= [];
       buildAnswerArray();
     }
@@ -318,7 +319,7 @@ addEventListeners();
           ],
         audio: "Blues 3 Ear App"
       },
-      { pdf: "Minor Swing",
+      { pdf: "Minor Swing Ear App",
         title: "Minor Swing",  
         key: "A",
         sheet: [
