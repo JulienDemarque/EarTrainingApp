@@ -27,6 +27,10 @@ div {
   
 }
 
+.step{
+  color: rgb(220, 177, 102);
+}
+
 .full{
   font-size: 30px;
   line-height: 72px;
@@ -151,13 +155,12 @@ sup {
 
 .onFocus {
   outline : none;
-  background-color: rgb(201, 240, 255);
+  background-color: rgb(247, 233, 197);
 }
 
 .selection{
   margin: 10px auto;
   width: 600px;
-  height: 150px;
  
 }
 
@@ -180,7 +183,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .rooty:hover{
-  background-color: lightgray;
+  background-color: rgb(247, 233, 197);
   cursor:pointer; 
 }
 
@@ -200,7 +203,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .extension:hover{
-  background-color: lightgray;
+  background-color: rgb(247, 233, 197);
   cursor:pointer; 
 }
 
@@ -220,7 +223,7 @@ button{
   background-color: white;
   border-color: rgb(220, 177, 102);
   font-family: "My Custom Font";
-  margin: 10px auto;
+  margin: 15px 5px;
   display: block;
   font-size: 20px;
   border-radius: 5px;
@@ -231,16 +234,20 @@ button:focus {
 }
 
 button:hover{
-  background-color: rgb(232, 197, 122);
+  background-color: rgb(247, 233, 197);
   cursor:pointer; 
+   transform: scale(1.06);
 }
 
 .controls{
-  height: 260px;
-  margin: 0px 5px 5px -15px;
+ 
   border: 2px solid rgb(95, 134, 142);
   border-radius: 10px;
   padding: 15px;
+}
+
+.down{
+   height: 270px;
 }
 
 .controls > button{
@@ -252,17 +259,15 @@ button:hover{
   margin: 5px auto;
 }
 
+.col-md-8{
+  padding: 0 7px;
+}
+
 .col-md-4{
-  padding: 15px;
+  padding: 0 7px;
   margin-top: 0px;
-  border-radius: 10px;
-  border: 2px solid rgb(95, 134, 142);
-}
-
-.extra-info{
-  height: 260px;
-}
-
-.row{
   margin-bottom: 15px;
 }
+
+
+

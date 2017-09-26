@@ -25,11 +25,11 @@ $(document).ready(function(){
         $("#key").text(song.key);
         for (i=0; i<song.sheet.length; i++){
         if(!song.sheet[i].divided){
-          console.log("cell");
+          //console.log("cell");
           var html = $(".lead-sheet").html();
           $(".lead-sheet").html(html + "<div id='"+ i +"' tabindex='-1' class= 'cell full'></div>");
         } else {
-           console.log("divided cell");
+           //console.log("divided cell");
           var html = $(".lead-sheet").html();
           var num = i+1;
           var numString = num.toString();
@@ -201,6 +201,7 @@ addEventListeners();
 
     function showAnswer(){
     	$("#song-title").text("Song Title: " + song.title);
+      $("#pdf").html('PDF: <a target="_blank" href="./PDF Ear App/'+ song.pdf +'.pdf">'+ song.title +'</a>');
       for (i=0; i<song.sheet.length; i++){
         chord= song.sheet[i].chord;
         extension= song.sheet[i].exten;
@@ -213,6 +214,7 @@ addEventListeners();
 });
     var data = [
         {
+        pdf: "Coquette Ear App",  
         title: "Coquette",  
         key: "D",
         sheet: [
@@ -254,6 +256,7 @@ addEventListeners();
         audio: "Coquette Ear App"
       },
       {
+        pdf: "Blues 1 Ear App", 
         title: "Blues 1",  
         key: "G",
         sheet: [
@@ -272,7 +275,7 @@ addEventListeners();
           ],
         audio: "Blues 1 Ear App"
       },
-      {
+      { pdf: "Blues 2 Ear App",
         title: "Blues 2",  
         key: "G",
         sheet: [
@@ -293,7 +296,7 @@ addEventListeners();
           ],
         audio: "Blues 2 Ear App"
       },
-      {
+      { pdf: "Blues 3 Ear App",
         title: "Blues 3",  
         key: "G",
         sheet: [
@@ -315,7 +318,7 @@ addEventListeners();
           ],
         audio: "Blues 3 Ear App"
       },
-      {
+      { pdf: "Minor Swing",
         title: "Minor Swing",  
         key: "A",
         sheet: [
@@ -331,14 +334,14 @@ addEventListeners();
             {divided: false, chord:"D", exten:"min"},
             {divided: false, chord:"A", exten:"min6"},
             {divided: false, chord:"A", exten:"min6"},
-            {divided: false, chord:"Bb", exten:"maj6"},
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
             {divided: false, chord:"E", exten:"7"},
             {divided: false, chord:"A", exten:"min6"},
             {divided: false, chord:"E", exten:"7"}
           ],
         audio: "Minor Swing Ear App"
       },
-      {
+      { pdf: "I can't give you anything but love Ear App",
         title: "I can't give you anything but love",  
         key: "G",
         sheet: [
@@ -380,7 +383,7 @@ addEventListeners();
           ],
         audio: "I can't give you anything but love Ear App"
       },
-      {
+      { pdf: "St James Infirmary Ear App",
         title: "St James Infirmary Blues",  
         key: "D",
         sheet: [
@@ -393,7 +396,7 @@ addEventListeners();
             {divided: true, chord:"D", exten:"min"}, 
             {divided: true, chord:"A", exten:"7"},
             {divided: false, chord:"D", exten:"min"},
-            {divided: true, chord:"Bb", exten:"7"},
+            {divided: true, chord:"A#/Bb", exten:"7"},
             {divided: true, chord:"A", exten:"7"},
             {divided: true, chord:"D", exten:"min"},
             {divided: true, chord:"A", exten:"7"}
