@@ -5,7 +5,7 @@
 }
 
 body{
-  font-family: "My Custom Font";
+  font-family: "Helvetica Neue", Helvetica,Arial, sans-serif, "My Custom Font";
   text-align: center;
   position: relative;
 }
@@ -47,7 +47,7 @@ div {
 }
 
 .cell {
-  
+    font-family:  "My Custom Font";
     position: relative;
     float: left;
     border: 1px solid black;
@@ -164,12 +164,17 @@ sup {
  
 }
 
+#key{
+  font-family: "My Custom Font";
+}
+
 .root{
   margin-top: 20px;
   overflow: hidden;
 }
 
 .rooty{
+  font-family: "My Custom Font";
   border-radius: 6px;
   line-height: 30px;
   height: 30px;
@@ -193,6 +198,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .extension{
+  font-family: "My Custom Font";
   border-radius: 6px;
   margin: 2px;
   line-height: 30px;
