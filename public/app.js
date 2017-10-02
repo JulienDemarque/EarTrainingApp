@@ -5,13 +5,12 @@ $(document).ready(function(){
 // add info button
 
 
-
-    function randomSong(){
-      return Math.floor(Math.random()*data.length);
+    function randomIndex(data){
+      return Math.floor(Math.random() * data.length);
     }
 
     
-    var song= data[randomSong()];
+    var song= swingBeginner[randomIndex(swingBeginner)];
 
     function setAudio(){
     	var audio = document.getElementById('audio');
@@ -46,7 +45,7 @@ $(document).ready(function(){
 //handle button change song
     function changeSong(){
 
-      song= data[randomSong()];
+      song= swingBeginner[randomIndex(swingBeginner)];
       setAudio();	
       $(".lead-sheet").empty();
       resetData();
@@ -213,7 +212,10 @@ addEventListeners();
 
 
 });
-    var data = [
+
+
+
+    var swingBeginner = [
         {
         pdf: "Coquette Ear App",  
         title: "Coquette",  
@@ -403,7 +405,300 @@ addEventListeners();
             {divided: true, chord:"A", exten:"7"}
           ],
         audio: "St James Infirmary Ear App"
+      },
+      { pdf: "Blues 4 Ear App",
+        title: "Blues 4",  
+        key: "Bb",
+        sheet: [
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: false, chord:"F", exten:"aug"},
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: false, chord:"A#/Bb", exten:"7"},
+            {divided: false, chord:"D#/Eb", exten:"maj"}, 
+            {divided: false, chord:"D#/Eb", exten:"min"}, 
+            {divided: false, chord:"A#/Bb", exten:"maj"}, 
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"C#/Db", exten:"dim7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"9"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"D#/Eb", exten:"min"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"F", exten:"aug"}
+          ],
+        audio: "Blues 4 Ear App"
+      },
+      { pdf: "Charleston Ear App",
+        title: "Charleston",  
+        key: "Bb",
+        sheet: [
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"D", exten:"9"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"7"},
+            {divided: false, chord:"F", exten:"9"}, 
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"F", exten:"9"}, 
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"D", exten:"9"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"F", exten:"7"}, 
+            {divided: false, chord:"C#/Bb", exten:"7"},
+            {divided: false, chord:"C#/Bb", exten:"7"}, 
+            {divided: false, chord:"D#/Eb", exten:"69"}, 
+            {divided: false, chord:"D#/Eb", exten:"69"}, 
+            {divided: false, chord:"C#/Bb", exten:"7"},
+            {divided: false, chord:"C#/Bb", exten:"7"}, 
+            {divided: false, chord:"D#/Eb", exten:"69"},
+            {divided: false, chord:"F", exten:"9"}, 
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"D", exten:"9"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"7"},
+            {divided: false, chord:"F", exten:"9"}, 
+            {divided: true, chord:"A#/Bb", exten:"maj6"},
+            {divided: true, chord:"B", exten:"dim7"},
+            {divided: true, chord:"C", exten:"min7"},
+            {divided: true, chord:"F", exten:"9"}
+          ],
+        audio: "Charleston Ear App"
+      },
+      { pdf: "Blues mineur App",
+        title: "Blues mineur",  
+        key: "G",
+        sheet: [
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"C", exten:"min6"},
+            {divided: false, chord:"C", exten:"min6"},  
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"D#/Eb", exten:"9"},
+            {divided: false, chord:"D", exten:"9"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"D", exten:"9"},
+            
+          ],
+        audio: "Blues mineur App"
+      },
+
+       { pdf: "Dark Eyes App",
+        title: "Dark Eyes",  
+        key: "D",
+        sheet: [
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"G", exten:"min6"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: true, chord:"D", exten:"min"},
+            {divided: true, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"}
+
+          ],
+        audio: "Dark Eyes App"
+      },
+
+       { pdf: "Joseph Joseph App",
+        title: "Joseph Joseph",  
+        key: "A",
+        sheet: [
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"min6"},
+            {divided: false, chord:"E", exten:"7"}
+
+          ],
+        audio: "Joseph Joseph App"
       }
+
     ];
+
+
+
+
+
+
+
+
+
+
+
+
+swingIntermediate = [
+     { pdf: "China Boy App",
+          title: "China Boy",  
+          key: "F",
+          sheet: [
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"D", exten:"7"},
+              {divided: false, chord:"D", exten:"7"},
+              {divided: false, chord:"G", exten:"7"},
+              {divided: false, chord:"G", exten:"7"},
+              {divided: false, chord:"G", exten:"7"},
+              {divided: false, chord:"G", exten:"7"},
+              {divided: false, chord:"A#/Bb", exten:"min"},
+              {divided: false, chord:"C", exten:"7"},
+              {divided: false, chord:"F", exten:"maj"},
+              {divided: false, chord:"D#/Eb", exten:"7"},
+              {divided: false, chord:"G#/Ab", exten:"maj6"},
+              {divided: false, chord:"D#/Eb", exten:"7"},
+              {divided: false, chord:"G#/Ab", exten:"maj6"},
+              {divided: false, chord:"D#/Eb", exten:"7"},
+              {divided: false, chord:"G#/Ab", exten:"maj6"},
+              {divided: false, chord:"D#/Eb", exten:"7"},
+              {divided: false, chord:"G#/Ab", exten:"maj6"},
+              {divided: false, chord:"C", exten:"7"},  
+              {divided: false, chord:"F", exten:"maj"},
+              {divided: false, chord:"F", exten:"maj"},
+              {divided: false, chord:"B", exten:"dim7"},
+              {divided: false, chord:"B", exten:"dim7"},
+              {divided: false, chord:"G", exten:"min7"},
+              {divided: false, chord:"C", exten:"7"},
+              {divided: false, chord:"F", exten:"maj6"},
+              {divided: false, chord:"C", exten:"7"},
+              
+            ],
+          audio: "China Boy App"
+        },
+
+        { pdf: "Django's Tiger App",
+        title: "Django's Tiger",  
+        key: "A",
+        sheet: [
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"A", exten:"dim7"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"C", exten:"dim7"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: false, chord:"F", exten:"9"},
+            {divided: false, chord:"F", exten:"9"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: false, chord:"E", exten:"9"},
+            {divided: true, chord:"A", exten:"maj6"},
+            {divided: true, chord:"A#/Bb", exten:"dim7"},
+            {divided: true, chord:"B", exten:"min7"},
+            {divided: true, chord:"E", exten:"9"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"G#/Ab", exten:"7"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"69"},
+            {divided: false, chord:"D", exten:"69"},
+            {divided: false, chord:"D", exten:"69"},
+            {divided: false, chord:"D#/Eb", exten:"dim7"},
+            {divided: false, chord:"A", exten:"maj6"},
+            {divided: false, chord:"F#/Gb", exten:"7"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: true, chord:"A", exten:"maj6"},
+            {divided: true, chord:"A#/Bb", exten:"dim7"},
+            {divided: true, chord:"B", exten:"min7"},
+            {divided: false, chord:"E", exten:"9"}
+
+          ],
+        audio: "Django's Tiger App"
+      },
+
+        { pdf: "Hungaria App",
+        title: "Hungaria",  
+        key: "G",
+        sheet: [
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G#/Ab", exten:"maj"},
+            {divided: false, chord:"G#/Ab", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"A#/Bb", exten:"dim7"},
+            {divided: false, chord:"A", exten:"min7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G#/Ab", exten:"maj"},
+            {divided: false, chord:"G#/Ab", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"min7"},
+            {divided: false, chord:"C", exten:"min6"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"E", exten:"7"},
+            {divided: false, chord:"A", exten:"min7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"G", exten:"maj"},
+            {divided: false, chord:"D", exten:"7"},
+
+          ],
+        audio: "Hungaria App"
+      }
+
+
+];
+
+swingIntermediate = swingIntermediate.push(swingBeginner);
 
 
