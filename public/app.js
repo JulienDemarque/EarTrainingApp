@@ -1,10 +1,22 @@
 $(document).ready(function(){
 
 // Things to do. When modify input again, the check button doesn't show the new changes... DONE
-// add pdf open button
+// add pdf open button DONE
 // add info button
 
+//SELECTION MODE
+    var selection = document.getElementById("sel1");
+    var mode="swingBeginner";
 
+    function modeChange(){
+      mode = selection.options[selection.selectedIndex].value;
+    }
+      
+    selection.addEventListener("change", modeChange); 
+
+
+
+//CHOSING RANDOM SONG IN THE DATA
     function randomIndex(data){
       return Math.floor(Math.random() * data.length);
     }
@@ -20,6 +32,8 @@ $(document).ready(function(){
 
     setAudio();
 
+
+//BUILD GRILLE
     function buildSheet(){
         $("#key").text(song.key);
         for (i=0; i<song.sheet.length; i++){
@@ -36,16 +50,22 @@ $(document).ready(function(){
           i++;
         }
       }
-      console.log($(".lead-sheet").html());
+   
     }
 
     buildSheet();
 
 
-//handle button change song
-    function changeSong(){
 
-      song= swingBeginner[randomIndex(swingBeginner)];
+
+//CHANGE SONG
+    function changeSong(){
+      if(mode == "swingBeginner"){
+        song= swingBeginner[randomIndex(swingBeginner)];
+      } else if(mode == "swingIntermediate"){
+        song= swingIntermediate[randomIndex(swingIntermediate)];
+      }
+      
       setAudio();	
       $(".lead-sheet").empty();
       resetData();
@@ -66,7 +86,7 @@ $(document).ready(function(){
 
 
 
-//Handle input
+//HANDLE INPUT
      var answer= [];
 
     function buildAnswerArray(){
@@ -74,7 +94,6 @@ $(document).ready(function(){
       for(i=0; i<song.sheet.length; i++){
         answer.push({chord:"", exten:""});
       }
-      console.log(answer);
     };  
 
     buildAnswerArray();
@@ -110,7 +129,6 @@ function addEventListeners(){
       $(this).addClass("onFocus");
       chord= $(this).text();
       answer[index].chord = chord;
-      //console.log(answer);
       displayFullChord(".selected");
     });
 
@@ -119,7 +137,6 @@ function addEventListeners(){
       $(this).addClass("onFocus");
       extension= $(this).text();
       answer[index].exten = extension;
-      //console.log(answer);
       displayFullChord(".selected");
     });
 
@@ -147,10 +164,14 @@ addEventListeners();
         displayExt = "<sub>m</sub><sup>6</sup>";
       } else if(extension == "7"){
         displayExt = "<sup>7</sup>";
+      } else if(extension == "7b9"){
+        displayExt = "<sup>7b9</sup>";
       } else if(extension == "9"){
         displayExt = "<sup>9</sup>";
       } else if(extension == "dim7"){
         displayExt = "<sup>O</sup>";
+      } else if(extension == "min7b5"){
+        displayExt = "<sub>m</sub><sup>7b5</sup>";
       }
       fullChord = chord + displayExt;
       $(cell).html(fullChord);
@@ -178,10 +199,6 @@ addEventListeners();
         const currentSheet = song.sheet[i];
         const currentAnswer = answer[i];
 
-      /* console.log("sheet chord "+ i + " " + song.sheet[i].chord);
-       console.log("sheet exten "+ i + " " + song.sheet[i].exten);
-       console.log("answer chord " + i + " " + answer[i].chord);
-       console.log("answer exten " + i + " " + answer[i].exten);*/
        
         if(isAnswerCorrect(currentSheet, currentAnswer)){
           markAs("correct", i);
@@ -189,7 +206,6 @@ addEventListeners();
           markAs("almostCorrect", i);
            
         } else {
-          //console.log(i);
           markAs("wrong", i);
         }
       }
@@ -469,7 +485,7 @@ addEventListeners();
           ],
         audio: "Charleston Ear App"
       },
-      { pdf: "Blues mineur App",
+      { pdf: "Blues mineur Ear App",
         title: "Blues mineur",  
         key: "G",
         sheet: [
@@ -487,10 +503,10 @@ addEventListeners();
             {divided: false, chord:"D", exten:"9"},
             
           ],
-        audio: "Blues mineur App"
+        audio: "Blues mineur Ear App"
       },
 
-       { pdf: "Dark Eyes App",
+       { pdf: "Dark Eyes Ear App",
         title: "Dark Eyes",  
         key: "D",
         sheet: [
@@ -513,10 +529,10 @@ addEventListeners();
             {divided: false, chord:"D", exten:"min"}
 
           ],
-        audio: "Dark Eyes App"
+        audio: "Dark Eyes Ear App"
       },
 
-       { pdf: "Joseph Joseph App",
+       { pdf: "Joseph Joseph Ear App",
         title: "Joseph Joseph",  
         key: "A",
         sheet: [
@@ -544,6 +560,8 @@ addEventListeners();
             {divided: false, chord:"A", exten:"7"},
             {divided: false, chord:"D", exten:"min"},
             {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"D", exten:"min"},
             {divided: false, chord:"A", exten:"min6"},
             {divided: false, chord:"A", exten:"min6"},
             {divided: false, chord:"F", exten:"7"},
@@ -552,7 +570,108 @@ addEventListeners();
             {divided: false, chord:"E", exten:"7"}
 
           ],
-        audio: "Joseph Joseph App"
+        audio: "Joseph Joseph Ear App"
+      },
+
+       { pdf: "Honeysuckle Rose Ear App",
+        title: "Honeysuckle Rose",  
+        key: "F",
+        sheet: [
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"G", exten:"min7"},
+            {divided: false, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"},
+            {divided: true, chord:"G#/Ab", exten:"dim7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"F", exten:"maj6"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"},
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"G", exten:"min7"},
+            {divided: false, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"},
+            {divided: true, chord:"G#/Ab", exten:"dim7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"F", exten:"maj6"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"},
+            {divided: false, chord:"F", exten:"9"},
+            {divided: false, chord:"F", exten:"9"},
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"A#/Bb", exten:"maj6"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"9"},
+            {divided: false, chord:"C", exten:"9"},
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"G", exten:"min7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"G", exten:"min7"},
+            {divided: false, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"},
+            {divided: true, chord:"G#/Ab", exten:"dim7"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: true, chord:"F", exten:"maj6"},
+            {divided: true, chord:"C", exten:"9"},
+            {divided: false, chord:"F", exten:"maj6"}
+
+          ],
+        audio: "Honeysuckle Rose Ear App"
+      },
+
+       { pdf: "The Sheik of Araby Ear App",
+        title: "The Sheik of Araby ",  
+        key: "Bb",
+        sheet: [
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"B", exten:"dim7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: false, chord:"C#/Db", exten:"dim7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"B", exten:"dim7"},
+            {divided: true, chord:"C", exten:"min7"},
+            {divided: true, chord:"F", exten:"7"},
+            {divided: false, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"B", exten:"dim7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: true, chord:"F", exten:"7"},
+            {divided: true, chord:"D#/Eb", exten:"7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"D", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"7"},
+            {divided: false, chord:"C", exten:"7"},
+            {divided: false, chord:"C", exten:"min7"},
+            {divided: false, chord:"F", exten:"7"},
+            {divided: true, chord:"A#/Bb", exten:"maj"},
+            {divided: true, chord:"B", exten:"dim7"},
+            {divided: true, chord:"C", exten:"min7"},
+            {divided: true, chord:"F", exten:"7"}
+
+          ],
+        audio: "The Sheik of Araby Ear App"
       }
 
     ];
@@ -568,8 +687,8 @@ addEventListeners();
 
 
 
-swingIntermediate = [
-     { pdf: "China Boy App",
+  var swingIntermediate = [
+     { pdf: "China Boy Ear App",
           title: "China Boy",  
           key: "F",
           sheet: [
@@ -607,10 +726,10 @@ swingIntermediate = [
               {divided: false, chord:"C", exten:"7"},
               
             ],
-          audio: "China Boy App"
+          audio: "China Boy Ear App"
         },
 
-        { pdf: "Django's Tiger App",
+        { pdf: "Django's Tiger Ear App",
         title: "Django's Tiger",  
         key: "A",
         sheet: [
@@ -652,10 +771,10 @@ swingIntermediate = [
             {divided: false, chord:"E", exten:"9"}
 
           ],
-        audio: "Django's Tiger App"
+        audio: "Django's Tiger Ear App"
       },
 
-        { pdf: "Hungaria App",
+        { pdf: "Hungaria Ear App",
         title: "Hungaria",  
         key: "G",
         sheet: [
@@ -693,12 +812,108 @@ swingIntermediate = [
             {divided: false, chord:"D", exten:"7"},
 
           ],
-        audio: "Hungaria App"
+        audio: "Hungaria Ear App"
+      },
+
+        { pdf: "Nuages Ear App",
+        title: "Nuages",  
+        key: "G",
+        sheet: [
+            {divided: false, chord:"D#/Eb", exten:"9"},
+            {divided: true, chord:"A", exten:"min7b5"},
+            {divided: true, chord:"D", exten:"7b9"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"D#/Eb", exten:"9"},
+            {divided: true, chord:"A", exten:"min7b5"},
+            {divided: true, chord:"D", exten:"7b9"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"F#/Gb", exten:"min7b5"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"E", exten:"min"},
+            {divided: false, chord:"E", exten:"min"},
+            {divided: true, chord:"A", exten:"7"},
+            {divided: true, chord:"G#/Ab", exten:"7"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: true, chord:"D", exten:"9"},
+            {divided: true, chord:"C#/Db", exten:"9"},
+            {divided: false, chord:"D", exten:"9"},
+            {divided: false, chord:"D#/Eb", exten:"9"},
+            {divided: true, chord:"A", exten:"min7b5"},
+            {divided: true, chord:"D", exten:"7b9"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"G#/Ab", exten:"7"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"69"},
+            {divided: false, chord:"C", exten:"69"},
+            {divided: false, chord:"C", exten:"min6"},
+            {divided: false, chord:"C", exten:"min6"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"G", exten:"maj6"},
+            {divided: false, chord:"D#/Eb", exten:"9"},
+            {divided: true, chord:"A", exten:"min7b5"},
+            {divided: true, chord:"D", exten:"7b9"},
+            {divided: true, chord:"G", exten:"maj6"},
+            {divided: true, chord:"C", exten:"min"},
+            {divided: true, chord:"G", exten:"maj6"},
+            {divided: true, chord:"D", exten:"7"}          
+
+          ],
+        audio: "Nuages Ear App"
+      },
+
+        { pdf: "Seul ce soir Ear App",
+        title: "Seul ce soir",  
+        key: "C",
+        sheet: [
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"E", exten:"min7b5"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: true, chord:"E", exten:"min7"},
+            {divided: true, chord:"D#/Eb", exten:"min7"},
+            {divided: true, chord:"D", exten:"min7"},
+            {divided: true, chord:"G", exten:"7"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"B", exten:"7"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"E", exten:"min7b5"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"F", exten:"min6"},
+            {divided: false, chord:"C", exten:"maj"},
+            {divided: false, chord:"A", exten:"7"},
+            {divided: false, chord:"D", exten:"min"},
+            {divided: false, chord:"G", exten:"7"},
+            {divided: true, chord:"C", exten:"69"},
+            {divided: true, chord:"C#/Db", exten:"dim7"},
+            {divided: true, chord:"D", exten:"min7"},
+            {divided: true, chord:"G", exten:"7"}
+
+          ],
+        audio: "Seul ce soir Ear App"
       }
 
 
 ];
 
-swingIntermediate = swingIntermediate.push(swingBeginner);
+
+swingIntermediate = swingIntermediate.concat(swingBeginner);
+
 
 

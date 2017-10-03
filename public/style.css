@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: "My Custom Font";
-    src: url(./realbook-webfont.ttf) format("truetype");
+    src: url(./CaveatBrush-Regular.ttf) format("truetype");
 }
 
 body{
@@ -139,12 +139,12 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 .supsub sub {
     position: relative;
     display: block;
-    font-size: .5em;
+    font-size: .7em;
     line-height: 0.8;
 }
 
 sup {
-    font-size: .5em;
+    font-size: .7em;
   line-height: 0.8;
 }
 
