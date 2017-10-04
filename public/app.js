@@ -2,7 +2,20 @@ $(document).ready(function(){
 
 // Things to do. When modify input again, the check button doesn't show the new changes... DONE
 // add pdf open button DONE
-// add info button
+// add info button DONE
+
+//GUIDE APPEAR DISAPPEAR
+  document.getElementById("guideLink").addEventListener("click", function(){
+    $(".info").removeClass("invisible");
+  });
+
+  document.getElementById("closingWindow").addEventListener("click", function(){
+    $(".info").addClass("invisible");
+  });
+
+  $(".info").click(function(){
+      $(".info").addClass("invisible");
+  });
 
 //SELECTION MODE
     var selection = document.getElementById("sel1");

@@ -4,10 +4,13 @@
     src: url(./CaveatBrush-Regular.ttf) format("truetype");
 }
 
+
+
 body{
   font-family: "Helvetica Neue", Helvetica,Arial, sans-serif, "My Custom Font";
   text-align: center;
   position: relative;
+  padding-top: 80px;
 }
 
 a{
@@ -16,7 +19,6 @@ a{
 
 h1{
   padding: 8px;
-  margin-top: 100px;
   background-color: rgb(95, 134, 142);
   color: white;
 }
@@ -47,6 +49,7 @@ div {
 }
 
 .cell {
+    color: black;
     font-family:  "My Custom Font";
     position: relative;
     float: left;
@@ -140,7 +143,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
     position: relative;
     display: block;
     font-size: .7em;
-    line-height: 0.8;
+    line-height: 0.3;
 }
 
 sup {
@@ -160,7 +163,6 @@ sup {
 
 .selection{
   margin: 10px auto;
-  width: 600px;
  
 }
 
@@ -169,11 +171,14 @@ sup {
 }
 
 .root{
+  font-size: 0; /* Trick to get the horizontal spacing of the children div */
   margin-top: 20px;
   overflow: hidden;
 }
 
 .rooty{
+  font-size: 14px;
+  display: inline-block;
   font-family: "My Custom Font";
   border-radius: 6px;
   line-height: 30px;
@@ -181,8 +186,8 @@ sup {
   width: 40px;
   margin: 2px;
   border: solid 1px black;
-  float: left;
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+ 
+-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 -moz-box-sizing: border-box;    /* Firefox, other Gecko */
 box-sizing: border-box;         /* Opera/IE 8+ */
 }
@@ -193,11 +198,13 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .ext{
+  font-size: 0; /* Trick to get the horizontal spacing of the children div */
   overflow: hidden; /*put this if there are floating elements inside !! */
   margin-top: 20px;
 }
 
 .extension{
+  font-size: 14px;
   font-family: "My Custom Font";
   border-radius: 6px;
   margin: 2px;
@@ -205,7 +212,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */
   height: 30px;
   width: 40px;
   border: solid 1px black;
-  float: left;
+  display: inline-block;
 }
 
 .extension:hover{
@@ -214,15 +221,15 @@ box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .correct{
-  background-color: rgb(175, 232, 122);
+  background-color: rgb(155, 255, 102);
 }
 
 .almostCorrect{
-  background-color: rgb(232, 197, 122);
+  background-color: rgb(255, 197, 70);
 }
 
 .wrong{
-  background-color: rgb(232, 122, 122);
+  background-color: rgb(250, 80, 80);
 }
 
 button{
@@ -246,14 +253,14 @@ button:hover{
 }
 
 .controls{
- 
+  overflow: hidden; 
   border: 2px solid rgb(95, 134, 142);
   border-radius: 10px;
   padding: 15px;
 }
 
 .down{
-   height: 270px;
+   min-height: 290px; 
 }
 
 .controls > button{
@@ -275,5 +282,53 @@ button:hover{
   margin-bottom: 15px;
 }
 
+.info{
+  top: 0;
+  position: absolute;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  background-color: rgba(95, 134, 142, 0.5);
+}
 
+.boxInfo{
+  padding: 50px;
+  background-color: rgba(95, 134, 142, 0.98);
+  border: 2px solid rgb(95, 134, 142);
+  border-radius: 30px;
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  height: 600px;
+  width: 70%;
+}
 
+.info h3, .fa-times{
+  color: white;
+}
+
+.fa-times:hover{
+  color: rgb(247, 233, 197);
+}
+
+#closingWindow{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 28px;
+}
+
+.exempleInfo{
+    margin: 5px;
+    height: 80px;
+}
+
+.comment{
+  margin: 20px;
+  float: left;
+  line-height: 40px;
+}
+
+.invisible{
+  display: none;
+}
