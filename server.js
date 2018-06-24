@@ -15,7 +15,11 @@ app.get("/", function(req, res) {
 });
 
 app.get("/chordapp", function(req, res) {
-  res.render('index.ejs');
+  res.render('chordapp.ejs');
+});
+
+app.get("/chordnote", function(req, res) {
+  res.render('chordnote.ejs');
 });
 
 app.get("/contact", function(req, res) {
@@ -32,15 +36,15 @@ app.post("/contact", function(req, res) {
 	var comment= req.body.comment;
 
 	var smtpTransport  = nodemailer.createTransport({
-       service: "Gmail", 
+       service: "Gmail",
        secure: true,
        auth: {
        user: "juliendemarquedev@gmail.com",
        pass: "demar0241"
        }
-   	}); 
+   	});
 
-   	
+
 
 	var helperOptions= {
 		//email options
@@ -57,8 +61,8 @@ app.post("/contact", function(req, res) {
 	           console.log("Message sent: " + res.message);
 	       }
 
-	  smtpTransport.close(); 
-	    }); 
+	  smtpTransport.close();
+	    });
 
     res.redirect("/confirm");
 });

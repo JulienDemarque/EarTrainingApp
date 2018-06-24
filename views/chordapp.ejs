@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chord Progressions App</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/chordapp.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/chordapp.js"></script>
+  </head>
+  <body>
+
+<% include partials/navbar.ejs %>
+
+
+  	<h1>Chord Progression Ear Trainer</h1>
+  	<br/>
+
+
+
+
+	 <div class="container">
+	 	<div class="row">
+	 		<div class="col-md-4">
+	 			<div class="controls up">
+		 			<h5><span class="step">step 1:</span> Listen the audio...</h5>
+		 			<audio  id="audio" controls>
+						<source src="" type="audio/mp3" >
+
+						Your browser does not support the audio element.
+					</audio>
+
+
+		  			<h3>Key : <span id="key"></span></h3>
+					<h5><span class="step">step 2: </span>Select the bar...  <i class="fa fa-arrow-right" aria-hidden="true"></i></h5>
+				</div>
+	 		</div>
+	 		<div class="col-md-8">
+				<div class= "lead-sheet">
+
+				</div>
+
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">
+		  	 	<div class= "controls down">
+				  	<div class= "selection">
+					    <h5><span class="step">step 3:</span>  ...Guess the chord... <i class="fa fa-arrow-down" aria-hidden="true"></i></h5>
+					    <div class= "root">
+					      <div class="rooty">C</div>
+					      <div class="rooty">C#/Db</div>
+					      <div class="rooty">D</div>
+					      <div class="rooty">D#/Eb</div>
+					      <div class="rooty">E</div>
+					      <div class="rooty">F</div>
+					      <div class="rooty">F#/Gb</div>
+					      <div class="rooty">G</div>
+					      <div class="rooty">G#/Ab</div>
+					      <div class="rooty">A</div>
+					      <div class="rooty">A#/Bb</div>
+					      <div class="rooty">B</div>
+					    </div>
+					    <br/>
+					    <h5><span class="step">step 4: </span> ...and extension  <i class="fa fa-arrow-down" aria-hidden="true"></i></h5>
+					    <div class="ext">
+					       <div class="extension">maj</div>
+					       <div class="extension">maj6</div>
+					       <div class="extension">maj69</div>
+					       <div class="extension">7</div>
+					       <div class="extension">7b9</div>
+					       <div class="extension">9</div>
+					       <div class="extension">min</div>
+					       <div class="extension">min7</div>
+					       <div class="extension">min6</div>
+					       <div class="extension">dim7</div>
+					       <div class="extension">min7b5</div>
+					    </div>
+				  	</div>
+
+			  		<button id="changeBtn">New Song <i class="fa fa-refresh" aria-hidden="true"></i></button>
+				  	<button id="check">Check Yourself</button>
+				  	<button id="showAnswer">Show Answer</button>
+
+		  		</div>
+		  	</div>
+		  	<div class="col-md-4">
+		  		<div class="controls down">
+			  		<div class="mode-select">
+		 				<div class="form-group">
+					      <label for="sel1" >Mode / Difficulty</label>
+					      <select class="form-control" id="sel1">
+					        <option value="swingBeginner">Swing Beginner </option>
+					        <option value="swingIntermediate">Swing Intermediate </option>
+					      </select>
+						</div>
+					</div>
+					<a id="guideLink">How it works?</a>
+					<br/>
+					<h3 id="song-title"></h3>
+					<span id="pdf"></span>
+
+				</div>
+
+		  	</div>
+  		</div>
+  	</div>
+
+  	<div class="info invisible">
+  		<div class="boxInfo">
+  		<a id="closingWindow"><i class="fa fa-times" aria-hidden="true"></i></a>
+  		<h3>Mode / Difficulty</h3>
+  			<p>Choose the style and difficulty you want. Swing Intermediate will pick songs from the Swing Beginner plus some more complex progressions.</p>
+  			<p>A short guide on harmony is coming soon on the website...</p>
+  		<br/>
+  		<br/>
+  		<h3>Color Code</h3>
+  			<div class="exempleInfo">
+  				<div class="cell full wrong">E7</div><p class="comment"><strong>Wrong chord</strong></p>
+  			</div>
+  			<div class="exempleInfo">
+  				<div class="cell full almostCorrect">D7</div><p class="comment"><strong>Right chord but wrong extension</strong></p>
+  			</div>
+  			<div class="exempleInfo">
+  				<div class="cell full correct">D9</div><p class="comment"><strong>Right chord and right extension!!</strong></p>
+  			</div>
+  		</div>
+  	</div>
+  </body>
+</html>
