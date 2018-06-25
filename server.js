@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var http = require("http");
 // Build the app
 var app = express();
+app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
@@ -21,6 +22,16 @@ app.get("/chordapp", function(req, res) {
 app.get("/chordnote", function(req, res) {
   res.render('chordnote.ejs');
 });
+
+app.post("/chordnote", function(req, res){
+  console.log(req.body.results);
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  let date = today.getDate();
+  let fullDate = "" + date + "-"+ month + "-"+ year;
+  console.log(fullDate);
+})
 
 app.get("/contact", function(req, res) {
   res.render('contact.ejs');

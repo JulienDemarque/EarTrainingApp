@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const startBtn = document.getElementById("start");
   const gameInterface = document.getElementById("gameInterface");
   const sessionResult = document.getElementById("sessionResult");
+
   progressDiv.style.width = 0;
   let sessionScore = {rightAnswers: 0, wrongAnswers: 0};
   let level = 4;
@@ -198,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function nextQuestion() {
+    sendDataToServer();
     nextBtn.classList.add("hide");
     resultsChordDisplay.innerText = "";
     resultsNoteDisplay.innerText = "";
@@ -260,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //We update answerNoteCorrect only at the first try
       if (numberOfTryNote === 0) {
         answerNoteCorrect = true;
-        numberOfTryNote++;
+
       }
       e.target.classList.add("right");
       resultsNoteDisplay.innerText = `Well done, ${randomNoteName} is the right answer!`;
@@ -268,7 +270,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //We update answerNoteCorrect only at the first try
       if (numberOfTryNote === 0) {
         answerNoteCorrect = false;
-        numberOfTryNote++;
       }
       if(!answerNoteCorrect){
         //We want to "activate" the answer buttons only if we didn't already find the answer
@@ -276,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resultsNoteDisplay.innerText = `Nope, ${randomNoteName} is not correct.`;
       }
     }
-
+    numberOfTryNote++;
     checkFullAnswer();
   }
 
@@ -287,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //We update answerChordCorrect only at the first try
       if (numberOfTryChord === 0) {
         answerChordCorrect = true;
-        numberOfTryChord++;
       }
       e.target.classList.add("right");
       resultsChordDisplay.innerText = `Well done, ${randomChordName} is the right answer!`;
@@ -295,17 +295,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       //We update answerChordCorrect only at the first try
       if (numberOfTryChord === 0) {
         answerChordCorrect = false;
-        numberOfTryChord++;
       }
       e.target.classList.add("wrong");
       resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
     }
-
+    numberOfTryChord++;
     checkFullAnswer();
   }
 
   function checkFullAnswer() {
-    //Note: numberOfTry is either 0 or 1. It doesn't goes more up. This behaviour was changed because it produces a bug in UX.
+
     //Check if right answer for the 2 and first try.
     if (numberOfTryNote === 1 && numberOfTryChord === 1 && answerNoteCorrect && answerChordCorrect) {
       progress += 25;
@@ -322,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       resultsDataPerLevel[level-4].wrongAnswers++;
     }
     console.log("numberOfTryNote,  numberOfTryChord : ", numberOfTryNote, numberOfTryChord);
-    if(numberOfTryNote === 1 && numberOfTryChord === 1 ){
+    if(numberOfTryNote >= 1 && numberOfTryChord >= 1 ){
       nextBtn.classList.remove("hide");
     }
     sessionResult.innerText = `${sessionScore.rightAnswers} of ${sessionScore.rightAnswers + sessionScore.wrongAnswers} correct`;
@@ -363,6 +362,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
 
+  function sendDataToServer(){
+    const params = {
+            results: resultsDataPerLevel
+        }
+    const http = new XMLHttpRequest()
+           http.open('POST', '/chordnote', true)
+           http.setRequestHeader('Content-type', 'application/json')
+           http.send(JSON.stringify(params)) // Make sure to stringify
+           http.onload = function() {
+               // Do whatever with response
+               console.log(http.responseText);
+           }
+  }
+
+
   //add Event listeners..
   function attachEventListener() {
     answersBtnNote.forEach(function(btn) {
@@ -372,6 +386,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     answersBtnChord.forEach(function(btn) {
       btn.addEventListener("click", checkAnswerChord);
     });
+
   }
 
 });
