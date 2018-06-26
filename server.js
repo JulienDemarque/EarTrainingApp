@@ -57,7 +57,7 @@ app.post("/chordnote", function(req, res){
   });
 
   console.log(database.level[0][fullDate]);
-
+  res.send("got it");
 });
 
 app.get("/contact", function(req, res) {
