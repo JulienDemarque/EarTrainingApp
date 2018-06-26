@@ -36,19 +36,23 @@ app.post("/chordnote", function(req, res){
   let date = today.getDate();
   let fullDate = "" + date + "-"+ month + "-"+ year;
   //console.log(fullDate);
-  if(database.level[dataFromClient.level][fullDate] === undefined){
-    if(dataFromClient.success){
-      database.level[dataFromClient.level] = {[fullDate]: {rightAnswers : 1, wrongAnswers: 0}}
+  dataFromClient.forEach(function(result){
+    //If we don't have result for this date we create the object for today
+    if(database.level[result.level][fullDate] === undefined){
+      if(result.success){
+        database.level[result.level] = {[fullDate]: {rightAnswers : 1, wrongAnswers: 0}}
+      } else {
+        database.level[result.level] = {[fullDate]: {rightAnswers : 0, wrongAnswers: 1}}
+      }
     } else {
-      database.level[dataFromClient.level] = {[fullDate]: {rightAnswers : 0, wrongAnswers: 1}}
+      if(result.success){
+        database.level[result.level][fullDate].rightAnswers += 1;
+      } else {
+        database.level[result.level][fullDate].wrongAnswers += 1;
+      }
     }
-  } else {
-    if(dataFromClient.success){
-      database.level[dataFromClient.level][fullDate].rightAnswers += 1;
-    } else {
-      database.level[dataFromClient.level][fullDate].wrongAnswers += 1;
-    }
-  }
+  })
+
   console.log(database.level[0][fullDate]);
 
 })

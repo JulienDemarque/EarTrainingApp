@@ -97,7 +97,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   progressDiv.style.width = 0;
-  let sessionScore = {rightAnswers: 0, wrongAnswers: 0};
+  let sessionScore = {
+    rightAnswers: 0,
+    wrongAnswers: 0
+  };
   let level = 4;
   let levelChord = level < 8 ? 3 : level - 4;
   let key;
@@ -112,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let answerNoteCorrect = false;
   let answerChordCorrect = false;
   let gotResult = false;
+  let results = [];
 
   startBtn.addEventListener("click", startGame);
   nextBtn.addEventListener("click", nextQuestion);
@@ -119,36 +123,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   loadBuffers();
   attachEventListener();
   showHideAnswerBtn();
-  //index is the level.
-  const resultsDataPerLevel = [{
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    },
-    {
-      rightAnswers: 0,
-      wrongAnswers: 0
-    }
-  ];
+
 
   function loadBuffers() {
     context = new(window.AudioContext || window.webkitAudioContext)();
@@ -168,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }
 
-  function startGame(){
+  function startGame() {
     startBtn.classList.add("hide");
     gameInterface.classList.remove("hide");
     nextQuestion();
@@ -273,15 +248,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (numberOfTryNote === 0) {
         answerNoteCorrect = false;
       }
-      if(!answerNoteCorrect){
+      if (!answerNoteCorrect) {
         //We want to "activate" the answer buttons only if we didn't already find the answer
         e.target.classList.add("wrong");
         resultsNoteDisplay.innerText = `Nope, ${randomNoteName} is not correct.`;
       }
     }
     numberOfTryNote++;
-    if(numberOfTryNote === 1){
-        checkFullAnswer();
+    if (numberOfTryNote === 1) {
+      checkFullAnswer();
     }
   }
 
@@ -300,14 +275,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (numberOfTryChord === 0) {
         answerChordCorrect = false;
       }
-      if(!answerChordCorrect){
+      if (!answerChordCorrect) {
         //We want to "activate" the answer buttons only if we didn't already find the answer
-      e.target.classList.add("wrong");
-      resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
+        e.target.classList.add("wrong");
+        resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
       }
     }
     numberOfTryChord++;
-    if(numberOfTryChord === 1){
+    if (numberOfTryChord === 1) {
       checkFullAnswer();
     }
   }
@@ -320,30 +295,25 @@ document.addEventListener("DOMContentLoaded", function(event) {
       success = true;
       gotResult = true;
       updateProgress();
-      //The code level 4 is the first real level... So we store it as level 1 in the database
       sessionScore.rightAnswers++;
-      resultsDataPerLevel[level-4].rightAnswers++;
+
     } else if ((numberOfTryNote === 1 && !answerNoteCorrect && !gotResult) || (numberOfTryChord === 1 && !answerChordCorrect && !gotResult)) {
       //we did at least one try on the chord and the note. So we can say if it failed
       progress = progress - 100 < 0 ? 0 : progress - 100;
       success = false;
       gotResult = true;
       updateProgress();
-      //The code level 4 is the first real level... So we store it as level 1 in the database
       sessionScore.wrongAnswers++;
-      resultsDataPerLevel[level-4].wrongAnswers++;
+
     }
     console.log("numberOfTryNote,  numberOfTryChord : ", numberOfTryNote, numberOfTryChord);
-    if(numberOfTryNote >= 1 && numberOfTryChord >= 1 ){
+    if (numberOfTryNote >= 1 && numberOfTryChord >= 1) {
       nextBtn.classList.remove("hide");
     }
     sessionResult.innerText = `${sessionScore.rightAnswers} of ${sessionScore.rightAnswers + sessionScore.wrongAnswers} correct`;
-    console.log(resultsDataPerLevel);
-    if(success !== undefined){
-      console.log("Sending Data to server!");
-      // We are sending too many post requests, server blocks then. we need to change that
-      // Maybe we need to send just one when we close the tab or window.
-      //sendDataToServer(success);
+
+    if (success !== undefined) {
+      sendDataToServer(success);
     }
   }
 
@@ -361,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }, 3000);
       nextQuestion();
     }
-    progressDiv.style.width = progress/4 + "%";
+    progressDiv.style.width = progress / 4 + "%";
   }
 
 
@@ -381,18 +351,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
 
-  function sendDataToServer(success){
+  function sendDataToServer(success) {
+    results.push({
+      level: level - 4,
+      success: success
+    });
+    console.log(results);
+    //We are debouncing the post request,
+    //we store 5 results and then send so the server don't think we are doing a DDoS attack
+    if (results.length === 5) {
+      //now we make the post request
+      makePostRequest();
+      //Then we empty are results array.
+      results = [];
+    }
+  }
+
+  function makePostRequest() {
     const params = {
-            results: {level: level-4, success: success}
-        }
+      results: results
+    };
     const http = new XMLHttpRequest()
-           http.open('POST', '/chordnote', true)
-           http.setRequestHeader('Content-type', 'application/json')
-           http.send(JSON.stringify(params)) // Make sure to stringify
-           http.onload = function() {
-               // Do whatever with response
-               console.log(http.responseText);
-           }
+    http.open('POST', '/chordnote', true)
+    http.setRequestHeader('Content-type', 'application/json')
+    http.send(JSON.stringify(params)) // Make sure to stringify
+    http.onload = function() {
+      // Do whatever with response
+      console.log(http.responseText);
+    }
   }
 
 
