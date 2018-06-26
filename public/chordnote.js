@@ -1,6 +1,10 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+/*jslint browser:true */
+/*jslint es6 */
 
-  const chromaticScale = [{
+document.addEventListener("DOMContentLoaded", function () {
+    "use strict";
+    const chromaticScale = [
+    {
       name: "Do",
       url: "/audio/Do.mp3"
     },
@@ -192,11 +196,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     answersBtnNote.forEach(function(btn) {
       btn.classList.remove("right");
       btn.classList.remove("wrong");
-    })
+    });
     answersBtnChord.forEach(function(btn) {
       btn.classList.remove("right");
       btn.classList.remove("wrong");
-    })
+    });
     playAgain();
   }
 
@@ -254,14 +258,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resultsNoteDisplay.innerText = `Nope, ${randomNoteName} is not correct.`;
       }
     }
-    numberOfTryNote++;
+    numberOfTryNote += 1;
     if (numberOfTryNote === 1) {
       checkFullAnswer();
     }
   }
 
   function checkAnswerChord(e) {
-    const resultsChordDisplay = document.getElementById("resultsChord");
     let answer = e.target.dataset.chord;
     if (answer === randomChordName) {
       //We update answerChordCorrect only at the first try
@@ -281,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
       }
     }
-    numberOfTryChord++;
+    numberOfTryChord += 1;
     if (numberOfTryChord === 1) {
       checkFullAnswer();
     }
@@ -295,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       success = true;
       gotResult = true;
       updateProgress();
-      sessionScore.rightAnswers++;
+      sessionScore.rightAnswers += 1;
 
     } else if ((numberOfTryNote === 1 && !answerNoteCorrect && !gotResult) || (numberOfTryChord === 1 && !answerChordCorrect && !gotResult)) {
       //we did at least one try on the chord and the note. So we can say if it failed
@@ -303,7 +306,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       success = false;
       gotResult = true;
       updateProgress();
-      sessionScore.wrongAnswers++;
+      sessionScore.wrongAnswers += 1;
 
     }
     console.log("numberOfTryNote,  numberOfTryChord : ", numberOfTryNote, numberOfTryChord);
@@ -322,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //checking if we level up!
     if (progress === 400) {
       console.log("level up!");
-      level++;
+      level += 1;
       progress = 0;
       //display level up text
       levelUpDiv.style.display = "inline";
@@ -371,14 +374,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const params = {
       results: results
     };
-    const http = new XMLHttpRequest()
-    http.open('POST', '/chordnote', true)
-    http.setRequestHeader('Content-type', 'application/json')
-    http.send(JSON.stringify(params)) // Make sure to stringify
+    const http = new XMLHttpRequest();
+    http.open('POST', '/chordnote', true);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.send(JSON.stringify(params)); // Make sure to stringify
     http.onload = function() {
       // Do whatever with response
       console.log(http.responseText);
-    }
+    };
+    http.onerror = function() {
+      console.log("** An error occurred during the transaction");
+    };
   }
 
 
