@@ -387,6 +387,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  //we want to send the left of the data before we close the webpage.
+  window.addEventListener("beforeunload", function () {
+    if(results){
+      makePostRequest();
+    }
+  });
 
   //add Event listeners..
   function attachEventListener() {
