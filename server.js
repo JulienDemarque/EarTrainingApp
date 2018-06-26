@@ -6,6 +6,10 @@ var bodyParser = require('body-parser');
 var http = require("http");
 // Build the app
 var app = express();
+//we are now storing the data in a database object, we want to change it into a real database
+const database = {level : [
+  {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+]};
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -25,12 +29,28 @@ app.get("/chordnote", function(req, res) {
 
 app.post("/chordnote", function(req, res){
   console.log(req.body.results);
+  let dataFromClient = req.body.results;
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1;
   let date = today.getDate();
   let fullDate = "" + date + "-"+ month + "-"+ year;
-  console.log(fullDate);
+  //console.log(fullDate);
+  if(database.level[dataFromClient.level][fullDate] === undefined){
+    if(dataFromClient.success){
+      database.level[dataFromClient.level] = {[fullDate]: {rightAnswers : 1, wrongAnswers: 0}}
+    } else {
+      database.level[dataFromClient.level] = {[fullDate]: {rightAnswers : 0, wrongAnswers: 1}}
+    }
+  } else {
+    if(dataFromClient.success){
+      database.level[dataFromClient.level][fullDate].rightAnswers += 1;
+    } else {
+      database.level[dataFromClient.level][fullDate].wrongAnswers += 1;
+    }
+  }
+  console.log(database.level[0][fullDate]);
+
 })
 
 app.get("/contact", function(req, res) {

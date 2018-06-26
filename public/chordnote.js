@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const gameInterface = document.getElementById("gameInterface");
   const sessionResult = document.getElementById("sessionResult");
 
+
   progressDiv.style.width = 0;
   let sessionScore = {rightAnswers: 0, wrongAnswers: 0};
   let level = 4;
@@ -110,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let numberOfTryChord = 0;
   let answerNoteCorrect = false;
   let answerChordCorrect = false;
+  let gotResult = false;
 
   startBtn.addEventListener("click", startGame);
   nextBtn.addEventListener("click", nextQuestion);
@@ -199,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function nextQuestion() {
-    sendDataToServer();
+    gotResult = false;
     nextBtn.classList.add("hide");
     resultsChordDisplay.innerText = "";
     resultsNoteDisplay.innerText = "";
@@ -278,7 +280,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
     }
     numberOfTryNote++;
-    checkFullAnswer();
+    if(numberOfTryNote === 1){
+        checkFullAnswer();
+    }
   }
 
   function checkAnswerChord(e) {
@@ -296,25 +300,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
       if (numberOfTryChord === 0) {
         answerChordCorrect = false;
       }
+      if(!answerChordCorrect){
+        //We want to "activate" the answer buttons only if we didn't already find the answer
       e.target.classList.add("wrong");
       resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
+      }
     }
     numberOfTryChord++;
-    checkFullAnswer();
+    if(numberOfTryChord === 1){
+      checkFullAnswer();
+    }
   }
 
   function checkFullAnswer() {
-
+    let success;
     //Check if right answer for the 2 and first try.
-    if (numberOfTryNote === 1 && numberOfTryChord === 1 && answerNoteCorrect && answerChordCorrect) {
+    if (numberOfTryNote === 1 && numberOfTryChord === 1 && answerNoteCorrect && answerChordCorrect && !gotResult) {
       progress += 25;
+      success = true;
+      gotResult = true;
       updateProgress();
       //The code level 4 is the first real level... So we store it as level 1 in the database
       sessionScore.rightAnswers++;
       resultsDataPerLevel[level-4].rightAnswers++;
-    } else if (numberOfTryNote === 1 && numberOfTryChord === 1 && (!answerNoteCorrect || !answerChordCorrect)) {
+    } else if ((numberOfTryNote === 1 && !answerNoteCorrect && !gotResult) || (numberOfTryChord === 1 && !answerChordCorrect && !gotResult)) {
       //we did at least one try on the chord and the note. So we can say if it failed
       progress = progress - 100 < 0 ? 0 : progress - 100;
+      success = false;
+      gotResult = true;
       updateProgress();
       //The code level 4 is the first real level... So we store it as level 1 in the database
       sessionScore.wrongAnswers++;
@@ -326,6 +339,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     sessionResult.innerText = `${sessionScore.rightAnswers} of ${sessionScore.rightAnswers + sessionScore.wrongAnswers} correct`;
     console.log(resultsDataPerLevel);
+    if(success !== undefined){
+      console.log("Sending Data to server!");
+      // We are sending too many post requests, server blocks then. we need to change that
+      // Maybe we need to send just one when we close the tab or window.
+      //sendDataToServer(success);
+    }
   }
 
   //display progress bar and move to level.
@@ -362,9 +381,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
 
-  function sendDataToServer(){
+  function sendDataToServer(success){
     const params = {
-            results: resultsDataPerLevel
+            results: {level: level-4, success: success}
         }
     const http = new XMLHttpRequest()
            http.open('POST', '/chordnote', true)
