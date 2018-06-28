@@ -96,8 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const nextBtn = document.getElementById("next");
   const againBtn = document.getElementById("again");
   const startBtn = document.getElementById("start");
+  const startMenu = document.getElementById("startMenu");
   const gameInterface = document.getElementById("gameInterface");
   const sessionResult = document.getElementById("sessionResult");
+
 
 
   progressDiv.style.width = 0;
@@ -148,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function startGame() {
-    startBtn.classList.add("hide");
+    startMenu.classList.add("hide");
     gameInterface.classList.remove("hide");
     nextQuestion();
   }

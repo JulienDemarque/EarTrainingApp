@@ -1,51 +1,9 @@
 /*jslint browser:false */
 /*jslint es6 */
 "use strict";
-// Require the stuff we need
-//-----------DATABASE SETUP-----------------
-var mongoose = require("mongoose");
-// Note: test is the default db when we open the mongo shell, I could have created another one
-//we want to use environnement variables eventually
-mongoose.connect("mongodb://localhost/test");
-var userSchema = new mongoose.Schema({
-  name: String,
-  results: Object
-});
-var User = mongoose.model("User", userSchema);
-//for now we will create just myTestUser...
-/*
-const results = {level : [
-  {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-]};
-var myTestUser = new User({
-  name: "MyTestUser",
-  results: results
-});
-myTestUser.save(function(err, user){
-    if(err){
-      console.log("something went wrong");
-    } else {
-      console.log("we saved a user to database");
-      console.log(user);
-    }
-});
 
-User.findOneAndUpdate({"name": "MyTestUser"}, {$set:{"results": results}}, {new: true}, function(err, user){
-  if(err){
-    console.log("something went wrong in the update");
-  } else {
-    console.log(user);
-  }
-});
 
-User.find({"name": "MyTestUser"}, function(err, user){
-  if(err){
-    console.log("something went wrong in the update");
-  } else {
-    console.log("From mongodb : ", user[0].results);
-  }
-}); */
-
+//database object serves as a temporary container for updating the database
 const database = {level : [
   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 ]};
@@ -54,17 +12,49 @@ const database = {level : [
 var express = require("express");
 var nodemailer = require("nodemailer");
 var bodyParser = require('body-parser');
-var http = require("http");
 // Build the app
 var app = express();
-//we are now storing the data in a database object, we want to change it into a real database
+var mongoose = require("mongoose");
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+var User = require("./models/user");
 
+//-----------DATABASE SETUP-----------------
+
+// Note: test is the default db when we open the mongo shell, I could have created another one
+//we want to use environnement variables eventually
+mongoose.connect("mongodb://localhost/test");
+var scoreSchema = new mongoose.Schema({
+  name: String,
+  results: Object
+});
+var Score = mongoose.model("Score", scoreSchema);
 
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+//PASSPORT CONFIGURATION
+app.use(require("express-session")({
+  //we might want to use environnement parameter for the secret value later. hash code is hard to reverse but still
+  secret: "my-secret-hash-code",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+//we are making currentUser variable holding the user data available everywhere on client-side
+app.use(function(req, res, next){
+  res.locals.currentUser = req.user;
+  next();
+});
+
+
+//----------NORMAL ROUTES -----------------------
 app.get("/", function(req, res) {
   res.render('home.ejs');
 });
@@ -77,9 +67,11 @@ app.get("/chordnote", function(req, res) {
   res.render('chordnote.ejs');
 });
 
+//------------ UPDATE DATABASE ROUTE ------------
 
-app.post("/chordnote", function(req, res){
-  console.log(req.body.results);
+app.post("/chordnote", isLoggedIn, function(req, res){
+  //console.log("line 100 : ", req.user);
+  //console.log(req.body.results);
   let dataFromClient = req.body.results;
   let today = new Date();
   let year = today.getFullYear();
@@ -87,17 +79,19 @@ app.post("/chordnote", function(req, res){
   let date = today.getDate();
   let fullDate = "" + date + "-"+ month + "-"+ year;
   //We are about to connect to database and retrive the user results...
-  User.find({"name": "MyTestUser"}, function(err, user){
+  Score.find({"name": req.user.username}, function(err, score){
     if(err){
       console.log("something went wrong in the update");
     } else {
-      console.log("From mongodb : ", user[0].results);
-      database.level = user[0].results.level;
-      updateDatabase();
+      console.log(score);
+        console.log("Find on mongodb line 109 : ", score[0].results);
+        database.level = score[0].results.level;
+        updateDatabase(req.user.username);
+
     }
   });
-  //console.log(fullDate);
-  function updateDatabase(){
+
+  function updateDatabase(username){
     dataFromClient.forEach(function(result){
       //If we don't have result for this date we create the object for today
       if(database.level[result.level][fullDate] === undefined){
@@ -115,8 +109,8 @@ app.post("/chordnote", function(req, res){
       }
     });
 
-    //we modified our database object, now we put it in the mongo
-    User.findOneAndUpdate({"name": "MyTestUser"}, {$set:{"results": database}}, {new: true}, function(err, user){
+    //we modified our database object, now we put it in the mongo db
+    Score.findOneAndUpdate({"name": username}, {$set:{"results": database}}, {new: true}, function(err, user){
       if(err){
         console.log("something went wrong in the update");
       } else {
@@ -125,10 +119,81 @@ app.post("/chordnote", function(req, res){
     });
   }
 
-
   //console.log(database.level[0][fullDate]);
   res.send("got it");
 });
+
+//------------------- AUTH ROUTES------------------
+
+// show register form
+app.get("/register", function(req, res){
+  res.render("register.ejs");
+});
+
+//handle sign up logic
+app.post("/register", function(req, res){
+  var newUser = new User({username: req.body.username});
+  User.register(newUser, req.body.password, function(err, user){
+    if(err){
+      console.log(err);
+      return res.render("register.ejs");
+    }
+    //we want to create a empty score that we will update.
+    createEmptyScore(req.body.username);
+    passport.authenticate("local")(req, res, function(){
+      res.redirect("chordnote");
+    });
+  })
+});
+
+function createEmptyScore(username){
+  //Ok this is some weirdness, mongo has converted my empty object literals to null, so I filled them with one bullshit property
+  const newResults = {level : [
+    {level: 0}, {level: 1}, {level: 2}, {level: 3}, {level: 4}, {level: 5}, {level: 6}, {level: 7}, {level: 8}, {level: 9}, {level: 10}
+  ]};
+  var emptyScore = new Score({
+    name: username,
+    results: newResults
+  });
+  emptyScore.save(function(err, score){
+      if(err){
+        console.log("something went wrong");
+      } else {
+        console.log("we saved a new Score to database");
+        console.log(score);
+      }
+  });
+}
+
+//show login form
+app.get("/login", function(req, res){
+  res.render("login.ejs");
+})
+
+//handling login logic
+app.post("/login", passport.authenticate("local",
+  {
+    successRedirect: "/chordnote",
+    failureRedirect: "/login"
+  }), function(req, res){
+});
+
+// logout route
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/");
+});
+
+//------------- MIDDLEWARE --------------
+// this is a custom middleware. We don't want to try to get to the database if the user is not login
+  function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+      return next();
+    }
+    res.send("need to login for saving data");
+  }
+
+//---------------------------CONTACT ROUTES ----------
 
 app.get("/contact", function(req, res) {
   res.render('contact.ejs');
@@ -175,9 +240,7 @@ app.post("/contact", function(req, res) {
     res.redirect("/confirm");
 });
 
-/*http.createServer(app).listen(8080, function(){
-	console.log("server running");
-});*/
+
 
 app.listen(process.env.PORT || 8080, process.env.IP, function(){
     console.log("server started");
