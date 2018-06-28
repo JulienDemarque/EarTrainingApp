@@ -2,6 +2,55 @@
 /*jslint es6 */
 "use strict";
 // Require the stuff we need
+//-----------DATABASE SETUP-----------------
+var mongoose = require("mongoose");
+// Note: test is the default db when we open the mongo shell, I could have created another one
+//we want to use environnement variables eventually
+mongoose.connect("mongodb://localhost/test");
+var userSchema = new mongoose.Schema({
+  name: String,
+  results: Object
+});
+var User = mongoose.model("User", userSchema);
+//for now we will create just myTestUser...
+/*
+const results = {level : [
+  {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+]};
+var myTestUser = new User({
+  name: "MyTestUser",
+  results: results
+});
+myTestUser.save(function(err, user){
+    if(err){
+      console.log("something went wrong");
+    } else {
+      console.log("we saved a user to database");
+      console.log(user);
+    }
+});
+
+User.findOneAndUpdate({"name": "MyTestUser"}, {$set:{"results": results}}, {new: true}, function(err, user){
+  if(err){
+    console.log("something went wrong in the update");
+  } else {
+    console.log(user);
+  }
+});
+
+User.find({"name": "MyTestUser"}, function(err, user){
+  if(err){
+    console.log("something went wrong in the update");
+  } else {
+    console.log("From mongodb : ", user[0].results);
+  }
+}); */
+
+const database = {level : [
+  {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+]};
+//------------End of DATABASE SETUP---------
+
 var express = require("express");
 var nodemailer = require("nodemailer");
 var bodyParser = require('body-parser');
@@ -9,9 +58,8 @@ var http = require("http");
 // Build the app
 var app = express();
 //we are now storing the data in a database object, we want to change it into a real database
-const database = {level : [
-  {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-]};
+
+
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -38,25 +86,47 @@ app.post("/chordnote", function(req, res){
   let month = today.getMonth() + 1;
   let date = today.getDate();
   let fullDate = "" + date + "-"+ month + "-"+ year;
-  //console.log(fullDate);
-  dataFromClient.forEach(function(result){
-    //If we don't have result for this date we create the object for today
-    if(database.level[result.level][fullDate] === undefined){
-      if(result.success){
-        database.level[result.level][fullDate] = {rightAnswers : 1, wrongAnswers: 0};
-      } else {
-        database.level[result.level][fullDate] = {rightAnswers : 0, wrongAnswers: 1};
-      }
+  //We are about to connect to database and retrive the user results...
+  User.find({"name": "MyTestUser"}, function(err, user){
+    if(err){
+      console.log("something went wrong in the update");
     } else {
-      if(result.success){
-        database.level[result.level][fullDate].rightAnswers += 1;
-      } else {
-        database.level[result.level][fullDate].wrongAnswers += 1;
-      }
+      console.log("From mongodb : ", user[0].results);
+      database.level = user[0].results.level;
+      updateDatabase();
     }
   });
+  //console.log(fullDate);
+  function updateDatabase(){
+    dataFromClient.forEach(function(result){
+      //If we don't have result for this date we create the object for today
+      if(database.level[result.level][fullDate] === undefined){
+        if(result.success){
+          database.level[result.level][fullDate] = {rightAnswers : 1, wrongAnswers: 0};
+        } else {
+          database.level[result.level][fullDate] = {rightAnswers : 0, wrongAnswers: 1};
+        }
+      } else {
+        if(result.success){
+          database.level[result.level][fullDate].rightAnswers += 1;
+        } else {
+          database.level[result.level][fullDate].wrongAnswers += 1;
+        }
+      }
+    });
 
-  console.log(database.level[0][fullDate]);
+    //we modified our database object, now we put it in the mongo
+    User.findOneAndUpdate({"name": "MyTestUser"}, {$set:{"results": database}}, {new: true}, function(err, user){
+      if(err){
+        console.log("something went wrong in the update");
+      } else {
+        console.log(user);
+      }
+    });
+  }
+
+
+  //console.log(database.level[0][fullDate]);
   res.send("got it");
 });
 
