@@ -7,7 +7,6 @@
 const database = {level : [
   {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 ]};
-//------------End of DATABASE SETUP---------
 
 var express = require("express");
 var nodemailer = require("nodemailer");
@@ -23,7 +22,8 @@ var User = require("./models/user");
 
 // Note: test is the default db when we open the mongo shell, I could have created another one
 //we want to use environnement variables eventually
-mongoose.connect("mongodb://localhost/test");
+//mongoose.connect("mongodb://localhost/test");
+mongoose.connect("mongodb://juliendemarque:voodoo1@ds121251.mlab.com:21251/mydatabase");
 var scoreSchema = new mongoose.Schema({
   name: String,
   results: Object
@@ -69,6 +69,8 @@ app.get("/chordnote", function(req, res) {
 
 //------------ UPDATE DATABASE ROUTE ------------
 
+//we have the middleware isLoggedIn that will shortcut the callback if we are not login
+//another way would be to not send the request at all from client-side
 app.post("/chordnote", isLoggedIn, function(req, res){
   //console.log("line 100 : ", req.user);
   //console.log(req.body.results);
@@ -84,7 +86,7 @@ app.post("/chordnote", isLoggedIn, function(req, res){
       console.log("something went wrong in the update");
     } else {
       console.log(score);
-        console.log("Find on mongodb line 109 : ", score[0].results);
+        console.log("Find on mongodb line 88 : ", score[0].results);
         database.level = score[0].results.level;
         updateDatabase(req.user.username);
 
