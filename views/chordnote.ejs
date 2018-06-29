@@ -4,7 +4,7 @@
 <head>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <script src="../chordnote.js"></script>
-  <link rel="stylesheet" type="text/css" href="chordnote.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/chordnote.css">
 </head>
 
 <body>
@@ -13,6 +13,7 @@
 
     <h1>Chord and Note Functional Trainer</h1>
     <br/>
+  <div class="container">
     <h5 id="sessionResult"></h5>
     <div id="startMenu">
       <button id="start">Start Quiz</button>
@@ -53,6 +54,13 @@
         </div>
       </div>
     </div>
-</body>
+    <div>
+      <% if(!currentUser){%>
+        Login to save your result to the database!
+        <% } else { %>
+          <button>See your all-time progress</button>
+        <% }  %>
+    </div>
+  </div>
 
-</html>
+<% include partials/footer.ejs %>
