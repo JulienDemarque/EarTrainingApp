@@ -21,9 +21,14 @@ var User = require("./models/user");
 //-----------DATABASE SETUP-----------------
 
 // Note: test is the default db when we open the mongo shell, I could have created another one
-//we want to use environnement variables eventually
 //mongoose.connect("mongodb://localhost/test");
-mongoose.connect("mongodb://juliendemarque:voodoo1@ds121251.mlab.com:21251/mydatabase");
+//I should have give an other name than "mydatabase"...
+//mongoose.connect("mongodb://juliendemarque:voodoo1@ds121251.mlab.com:21251/mydatabase");
+
+
+//we use environnement variables eventually
+mongoose.connect(process.env.DATABASEURL);
+
 var scoreSchema = new mongoose.Schema({
   name: String,
   results: Object
