@@ -5,12 +5,15 @@ document.addEventListener("DOMContentLoaded", function() {
   "use strict";
 
   const triggerButton = document.getElementById("graphBtn");
+  const graphDiv = document.getElementById("graph");
 
   triggerButton.addEventListener("click", displayGraph);
 
   //---------------------------------------------------
   /* callback of button */
   function displayGraph() {
+    /* We need to empty our grah (it still have the prvious graph there) */
+    graphDiv.innerHTML = "";
     /* first we want to get the data from the database */
     makeGetRequest();
     /* in the callback we will display the graph */
