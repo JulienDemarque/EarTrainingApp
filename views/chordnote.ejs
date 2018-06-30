@@ -4,6 +4,8 @@
 <head>
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <script src="../chordnote.js"></script>
+  <script src="../graph.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
   <link rel="stylesheet" type="text/css" href="stylesheets/chordnote.css">
 </head>
 
@@ -13,54 +15,77 @@
 
     <h1>Chord and Note Functional Trainer</h1>
     <br/>
-  <div class="container">
-    <h5 id="sessionResult"></h5>
-    <div id="startMenu">
-      <button id="start">Start Quiz</button>
-      <p>This app UI/UX was inspired to me by <a target="blank" href="http://tonedear.com/">Tonedear.com</a>, please visit for more functional ear training</p>
-    </div>
-    <div id="gameInterface" class="hide">
-      <div id="progressBar">
-        <div id="progress"></div>
+    <div class="container">
+      <h5 id="sessionResult"></h5>
+      <div id="startMenu">
+        <button id="start">Start Quiz</button>
+        <p>This app UI/UX was inspired to me by <a target="blank" href="http://tonedear.com/">Tonedear.com</a>, please visit for more functional ear training</p>
+      </div>
+      <div id="gameInterface" class="hide">
+        <div id="progressBar">
+          <div id="progress"></div>
+        </div>
+        <div>
+          <h5 id="levelUp" style="display: none;">You've leveled up! Increasing difficulty...</h5>
+        </div>
+        <button id="next">New Question</button>
+        <button id="again">Hear Again</button>
+        <div class="choices">
+          <h4>Chord:</h4>
+          <div class="chord">
+            <button data-chord="Do" data-level="0">I(Do)</button>
+            <button data-chord="Re" data-level="1">IIm(Re minor)</button>
+            <button data-chord="Mi" data-level="2">IIIm(Mi minor)</button>
+            <button data-chord="Fa" data-level="3">IV(Fa)</button>
+            <button data-chord="Sol" data-level="4">V(Sol)</button>
+            <button data-chord="La" data-level="5">VI(La minor)</button>
+            <button data-chord="Si" data-level="6">VIIdim(Si diminished)</button>
+            <h5 id="resultsChord"></h5>
+          </div>
+          <br/>
+          <h4>Note:</h4>
+          <div class="note">
+            <button data-note="Do" data-level="0">1(Do)</button>
+            <button data-note="Re" data-level="3">2(Re)</button>
+            <button data-note="Mi" data-level="1">3(Mi)</button>
+            <button data-note="Fa" data-level="4">4(Fa)</button>
+            <button data-note="Sol" data-level="2">5(Sol)</button>
+            <button data-note="La" data-level="5">6(La)</button>
+            <button data-note="Si" data-level="6">7(Si)</button>
+            <h5 id="resultsNote"></h5>
+          </div>
+        </div>
       </div>
       <div>
-        <h5 id="levelUp" style="display: none;">You've leveled up! Increasing difficulty...</h5>
-      </div>
-      <button id="next">New Question</button>
-      <button id="again">Hear Again</button>
-      <div class="choices">
-        <h4>Chord:</h4>
-        <div class="chord">
-          <button data-chord="Do" data-level="0">I(Do)</button>
-          <button data-chord="Re" data-level="1">IIm(Re minor)</button>
-          <button data-chord="Mi" data-level="2">IIIm(Mi minor)</button>
-          <button data-chord="Fa" data-level="3">IV(Fa)</button>
-          <button data-chord="Sol" data-level="4">V(Sol)</button>
-          <button data-chord="La" data-level="5">VI(La minor)</button>
-          <button data-chord="Si" data-level="6">VIIdim(Si diminished)</button>
-          <h5 id="resultsChord"></h5>
-        </div>
-        <br/>
-        <h4>Note:</h4>
-        <div class="note">
-          <button data-note="Do" data-level="0">1(Do)</button>
-          <button data-note="Re" data-level="3">2(Re)</button>
-          <button data-note="Mi" data-level="1">3(Mi)</button>
-          <button data-note="Fa" data-level="4">4(Fa)</button>
-          <button data-note="Sol" data-level="2">5(Sol)</button>
-          <button data-note="La" data-level="5">6(La)</button>
-          <button data-note="Si" data-level="6">7(Si)</button>
-          <h5 id="resultsNote"></h5>
-        </div>
-      </div>
-    </div>
-    <div>
-      <% if(!currentUser){%>
-        Login to save your result to the database!
-        <% } else { %>
-          <button>See your all-time progress</button>
-        <% }  %>
-    </div>
-  </div>
+        <% if(!currentUser){%>
+          Login to save your result to the database!
+          <% } else { %>
+            <!-- Button trigger modal -->
+            <button id="graphBtn" type="button" data-toggle="modal" data-target="#myModal">
+            See your all-time progress
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">All-Time Progress</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="big">
+                        <div id="graph"></div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<% include partials/footer.ejs %>
+            <% }  %>
+      </div>
+    </div>
+
+    <% include partials/footer.ejs %>

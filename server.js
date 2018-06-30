@@ -25,6 +25,7 @@ var User = require("./models/user");
 //the URI of the mlab in store in process.env.DATABASEURL in heroku (see settings)
 
 //we use environnement variables eventually
+console.log(process.env.DATABASEURL);
 mongoose.connect(process.env.DATABASEURL);
 
 var scoreSchema = new mongoose.Schema({
@@ -41,7 +42,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 //PASSPORT CONFIGURATION
-
+console.log(process.env.SECRETHASHCODE);
 app.use(require("express-session")({
   //We created a environnent variable with same value locally and on heroku for safety.
   secret: process.env.SECRETHASHCODE,
@@ -148,6 +149,25 @@ app.post("/chordnote", isLoggedIn, function(req, res) {
   res.send("got it");
 });
 
+//----------------------------------------------
+/* Route for sending json for the d3 graph */
+app.get("/graph", isLoggedIn, function(req, res) {
+  let myJson;
+  //fetching data from database:
+  Score.find({
+    "name": req.user.username
+  }, function(err, score) {
+    if (err) {
+      console.log("something went wrong in the update");
+    } else {
+      //we get an array of found documents, even if there is only one (hopefully!)
+      console.log("Find on mongodb line 97 : ", score[0].results.level);
+      myJson = score[0].results.level;
+    }
+    res.json(myJson);
+  });
+});
+
 //------------------- AUTH ROUTES------------------
 
 // show register form
@@ -170,7 +190,7 @@ app.post("/register", function(req, res) {
     passport.authenticate("local")(req, res, function() {
       res.redirect("chordnote");
     });
-  })
+  });
 });
 
 function createEmptyScore(username) {
@@ -217,7 +237,7 @@ function createEmptyScore(username) {
 //show login form
 app.get("/login", function(req, res) {
   res.render("login.ejs");
-})
+});
 
 //handling login logic
 app.post("/login", passport.authenticate("local", {
