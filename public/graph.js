@@ -125,7 +125,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const lineOpacityHover = "0.85";
     const lineStroke = "2.5px";
     const lineStrokeHover = "4.5px";
+    const otherLinesOpacityHover = "0.1";
     const circleOpacity = '0.85';
+    const circleOpacityOnLineHover = "0.25";
     const circleRadius = 3;
     const circleRadiusHover = 6;
 
@@ -181,21 +183,31 @@ document.addEventListener("DOMContentLoaded", function() {
       .on("mouseout", function(d) {
         setTimeout(function() {
           svg.select(".title-text").remove();
-        }, 200);
+        }, 100);
       })
       .append('path')
       .attr('class', 'line')
       .attr('d', d => line(d.scores))
       .style('stroke', (d, i) => color(i))
       .style('opacity', lineOpacity)
+      .style("stroke-width", lineStroke)
       .on("mouseover", function(d) {
+        d3.selectAll('.line')
+         .style('opacity', otherLinesOpacityHover);
+        d3.selectAll('.circle')
+         .style('opacity', circleOpacityOnLineHover);
         d3.select(this)
           .style('opacity', lineOpacityHover)
           .style("stroke-width", lineStrokeHover)
           .style("cursor", "pointer");
       })
       .on("mouseout", function(d) {
+        d3.selectAll(".line")
+					.style('opacity', lineOpacity);
+        d3.selectAll('.circle')
+					.style('opacity', circleOpacity);
         d3.select(this)
+          .style('opacity', lineOpacity)
           .style("stroke-width", lineStroke)
           .style("cursor", "none");
       });
