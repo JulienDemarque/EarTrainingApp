@@ -123,8 +123,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const duration = 250;
     const lineOpacity = "0.25";
     const lineOpacityHover = "0.85";
-    const lineStroke = "1.5px";
-    const lineStrokeHover = "2.5px";
+    const lineStroke = "2.5px";
+    const lineStrokeHover = "4.5px";
     const circleOpacity = '0.85';
     const circleRadius = 3;
     const circleRadiusHover = 6;
