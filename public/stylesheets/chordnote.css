@@ -66,15 +66,6 @@ button:focus {
   background-color: rgb(250, 80, 80);
 }
 
-.big{
-  width: 800px;
-  height: 500px;
-}
-
-.modal-dialog{
-  width: 900px;
-}
-
 #progressBar{
   margin: 20px auto;
   overflow: hidden;
@@ -91,4 +82,30 @@ button:focus {
   height: 100%;
   background-color: rgb(125, 184, 192);
   transition: width 2s;
+}
+
+/*  D3 styling*/
+
+.big{
+  width: 800px;
+  height: 500px;
+}
+
+.modal-dialog{
+  width: 900px;
+}
+
+.text {
+  font-size: 15px;
+
+}
+
+.title-text {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.line {
+  stroke-width: 2;
+  fill: none;
 }

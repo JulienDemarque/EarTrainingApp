@@ -118,7 +118,8 @@ document.addEventListener("DOMContentLoaded", function() {
     /* Declare our constants for styling: */
     const w = 800;
     const h = 500;
-    const padding = 80;
+    const paddingLeftRight = 100;
+    const paddingTopBottom = 40;
     const duration = 250;
     const lineOpacity = "0.25";
     const lineOpacityHover = "0.85";
@@ -139,11 +140,11 @@ document.addEventListener("DOMContentLoaded", function() {
     /* declare our scales: */
     const xScale = d3.scaleTime()
       .domain([d3.min(datesForDomain, d => parseTime(d.date)), d3.max(datesForDomain, d => parseTime(d.date))])
-      .range([padding, w - padding]);
+      .range([paddingLeftRight, w - paddingLeftRight]);
 
     const yScale = d3.scaleLinear()
       .domain([1, 0])
-      .range([padding, h - padding]);
+      .range([paddingTopBottom, h - paddingTopBottom]);
 
     var color = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -175,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function() {
           .text("level : " + d.level)
           .attr("text-anchor", "middle")
           .attr("x", w / 2)
-          .attr("y", 30 + padding);
+          .attr("y", paddingTopBottom - 5);
       })
       .on("mouseout", function(d) {
         setTimeout(function() {
@@ -204,18 +205,18 @@ document.addEventListener("DOMContentLoaded", function() {
     const xAxis = d3.axisBottom(xScale).tickFormat(formatTime);
     svg.append("g")
       .attr("id", "x-axis")
-      .attr("transform", `translate(0, ${h - padding})`)
+      .attr("transform", `translate(0, ${h - paddingTopBottom})`)
       .call(xAxis);
 
     const yAxis = d3.axisLeft(yScale)
       .tickFormat(d3.format(".0%"));
     svg.append("g")
       .attr("id", "y-axis")
-      .attr("transform", `translate(${padding}, 0)`)
+      .attr("transform", `translate(${paddingLeftRight}, 0)`)
       .call(yAxis)
       .append('text')
       .attr("y", 15)
-      .attr("x", -padding)
+      .attr("x", -paddingLeftRight)
       .attr("transform", "rotate(-90)")
       .attr("fill", "#000")
       .text("Percentage of success");;
