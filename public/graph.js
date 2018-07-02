@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //--------------------------------
     /* Set the parse and formating time: */
     var parseTime = d3.timeParse("%d-%m-%Y");
-    var formatTime = d3.timeFormat("%B %d, %Y");
+    var formatTime = d3.timeFormat("%d-%b-%y");
     // if we want the day also in the axis :
     // var formatTime = d3.timeFormat("%B %d, %Y");
 
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
     svg.append("g")
       .attr("id", "x-axis")
       .attr("transform", `translate(0, ${h - paddingTopBottom})`)
-      .call(xAxis);
+      .call(xAxis.ticks(5));
 
     const yAxis = d3.axisLeft(yScale)
       .tickFormat(d3.format(".0%"));

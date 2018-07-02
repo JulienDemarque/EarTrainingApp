@@ -82,6 +82,8 @@ app.post("/chordnote", isLoggedIn, function(req, res) {
   //console.log("line 100 : ", req.user);
   //console.log(req.body.results);
   let dataFromClient = req.body.results;
+  /* Note: the Date will return the local time of the server!
+  We can probably fix that by sending the time from client side to in the request... */
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth() + 1;
