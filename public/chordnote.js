@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
     wrongAnswers: 0
   };
   let level = 4;
-  let levelChord = level < 8 ? 3 : level - 4;
+  let levelChord = 3;
   let key;
   let context;
   let random;
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let buffer = chromaticScale[(levelsToNote[random] + key) % 12].buffer;
     playBuffer(buffer, 3.5);
     randomNoteName = chromaticScale[levelsToNote[random]].name;
-    //console.log("Note name : ", randomNoteName);
+    console.log("Note name : ", randomNoteName);
   }
 
   function checkAnswerNote(e) {
@@ -327,7 +327,10 @@ document.addEventListener("DOMContentLoaded", function () {
     //checking if we level up!
     if (progress === 400) {
       console.log("level up!");
-      level += 1;
+      if(level<11){
+        level += 1;
+        levelChord = level < 8 ? 3 : level - 4;
+      }
       progress = 0;
       //display level up text
       levelUpDiv.style.display = "inline";
@@ -350,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     answersBtnChord.forEach(function(btn) {
       btn.classList.remove("hide");
+      console.log(levelChord);
       if (btn.dataset.level >= levelChord) {
         btn.classList.add("hide");
       }

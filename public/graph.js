@@ -6,8 +6,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   const triggerButton = document.getElementById("graphBtn");
   const graphDiv = document.getElementById("graph");
-
+  //Note: if the user in not login, the triggerButton does not exist!! this throw an error in the console.
+  // We can maybe fix that by using classes conditional in ejs and display: none in css.
   triggerButton.addEventListener("click", displayGraph);
+
 
   //---------------------------------------------------
   /* callback of button */
@@ -18,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function() {
     makeGetRequest();
     /* in the callback we will display the graph */
   }
+
+
 
   //---------------------------------------------------
   /* getting the json from server */
