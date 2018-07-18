@@ -17,6 +17,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
 
+
 //-----------DATABASE SETUP-----------------
 
 // Note: test is the default db when we open the mongo shell, I could have created another one
@@ -59,6 +60,7 @@ app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
   next();
 });
+
 
 
 //----------NORMAL ROUTES -----------------------
