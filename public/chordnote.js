@@ -1,9 +1,5 @@
-/*jslint browser:true */
-/*jslint es6 */
-
-document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
-    const chromaticScale = [
+document.addEventListener("DOMContentLoaded", () => {
+  const chromaticScale = [
     {
       name: "Do",
       url: "/audio/Do.mp3"
@@ -82,13 +78,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   ];
 
-  const harmonization = ["major", "minor", "minor", "major", "major", "minor", "dim"];
-  //index are the levels, value are the index of the corresponding note in the chromaticScale in C major.
+  const harmonization = [
+    "major",
+    "minor",
+    "minor",
+    "major",
+    "major",
+    "minor",
+    "dim"
+  ];
+  // index are the levels, value are the index of the corresponding note in the chromaticScale in C major.
   const levelsToChord = [0, 2, 4, 5, 7, 9, 11];
   const levelsToNote = [0, 4, 7, 2, 5, 9, 11, 1, 3, 6, 8, 10];
-  //Selecting DOM nodes
+  // Selecting DOM nodes
   const answersBtnNote = document.querySelectorAll(".note button[data-note]");
-  const answersBtnChord = document.querySelectorAll(".chord button[data-chord]");
+  const answersBtnChord = document.querySelectorAll(
+    ".chord button[data-chord]"
+  );
   const progressDiv = document.getElementById("progress");
   const levelUpDiv = document.getElementById("levelUp");
   const resultsNoteDisplay = document.getElementById("resultsNote");
@@ -100,10 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const gameInterface = document.getElementById("gameInterface");
   const sessionResult = document.getElementById("sessionResult");
 
-
-
   progressDiv.style.width = 0;
-  let sessionScore = {
+  const sessionScore = {
     rightAnswers: 0,
     wrongAnswers: 0
   };
@@ -130,19 +134,18 @@ document.addEventListener("DOMContentLoaded", function () {
   attachEventListener();
   showHideAnswerBtn();
 
-
   function loadBuffers() {
-    context = new(window.AudioContext || window.webkitAudioContext)();
+    context = new (window.AudioContext || window.webkitAudioContext)();
     chromaticScale.forEach(pushBufferToArray);
-    //we go trough each url and create a buffer for each...
+    // we go trough each url and create a buffer for each...
     function pushBufferToArray(obj, index) {
-      let request = new XMLHttpRequest();
-      request.open('get', obj.url, true);
-      request.responseType = 'arraybuffer';
+      const request = new XMLHttpRequest();
+      request.open("get", obj.url, true);
+      request.responseType = "arraybuffer";
       request.onload = function() {
-        context.decodeAudioData(request.response, function(theBuffer) {
+        context.decodeAudioData(request.response, theBuffer => {
           chromaticScale[index].buffer = theBuffer;
-          //console.log(chromaticScale);
+          // console.log(chromaticScale);
         });
       };
       request.send();
@@ -156,26 +159,26 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function play251() {
-    //play II
+    // play II
     playBuffer(chromaticScale[(key + 2) % 12].buffer, 0);
     playBuffer(chromaticScale[(key + 5) % 12].buffer, 0);
     playBuffer(chromaticScale[(key + 9) % 12].buffer, 0);
 
-    //play V
+    // play V
     playBuffer(chromaticScale[(key + 7) % 12].buffer, 0.6);
     playBuffer(chromaticScale[(key + 11) % 12].buffer, 0.6);
     playBuffer(chromaticScale[(key + 14) % 12].buffer, 0.6);
 
-    //play I
-    playBuffer(chromaticScale[(key) % 12].buffer, 1.2);
+    // play I
+    playBuffer(chromaticScale[key % 12].buffer, 1.2);
     playBuffer(chromaticScale[(key + 4) % 12].buffer, 1.2);
     playBuffer(chromaticScale[(key + 7) % 12].buffer, 1.2);
   }
 
-  //This a reusable function to play a sound. Very handy
+  // This a reusable function to play a sound. Very handy
   function playBuffer(buffer, delay) {
-    var source = context.createBufferSource();
-    var now = context.currentTime;
+    const source = context.createBufferSource();
+    const now = context.currentTime;
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(now + delay);
@@ -194,12 +197,12 @@ document.addEventListener("DOMContentLoaded", function () {
     key = Math.floor(Math.random() * 12);
     random = Math.floor(Math.random() * level);
     randomChord = Math.floor(Math.random() * levelChord);
-    //remove wrong or right class...
-    answersBtnNote.forEach(function(btn) {
+    // remove wrong or right class...
+    answersBtnNote.forEach(btn => {
       btn.classList.remove("right");
       btn.classList.remove("wrong");
     });
-    answersBtnChord.forEach(function(btn) {
+    answersBtnChord.forEach(btn => {
       btn.classList.remove("right");
       btn.classList.remove("wrong");
     });
@@ -207,55 +210,59 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function playAgain() {
-    //Play key
+    // Play key
     play251();
-    //Play chord
+    // Play chord
     let bufferRoot;
     let bufferThird;
     let bufferFifth;
     bufferRoot = chromaticScale[(levelsToChord[randomChord] + key) % 12].buffer;
-    //console.log("key : ", chromaticScale[key].name);
-    //console.log("randomChordRoot : chromaticScale[(levelsToChord[randomChord]+key)%12].name ", chromaticScale[(levelsToChord[randomChord] + key) % 12].name);
+    // console.log("key : ", chromaticScale[key].name);
+    // console.log("randomChordRoot : chromaticScale[(levelsToChord[randomChord]+key)%12].name ", chromaticScale[(levelsToChord[randomChord] + key) % 12].name);
     if (harmonization[randomChord] === "major") {
-      bufferThird = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 4].buffer;
-      bufferFifth = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 7].buffer;
+      bufferThird =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 4].buffer;
+      bufferFifth =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 7].buffer;
     } else if (harmonization[randomChord] === "minor") {
-      bufferThird = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 3].buffer;
-      bufferFifth = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 7].buffer;
+      bufferThird =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 3].buffer;
+      bufferFifth =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 7].buffer;
     } else if (harmonization[randomChord] === "dim") {
-      bufferThird = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 3].buffer;
-      bufferFifth = chromaticScale[(levelsToChord[randomChord] + key) % 12 + 6].buffer;
+      bufferThird =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 3].buffer;
+      bufferFifth =
+        chromaticScale[((levelsToChord[randomChord] + key) % 12) + 6].buffer;
     }
     playBuffer(bufferRoot, 2.5);
     playBuffer(bufferThird, 2.5);
     playBuffer(bufferFifth, 2.5);
     randomChordName = chromaticScale[levelsToChord[randomChord]].name;
     console.log("Chord name : ", randomChordName);
-    //Play Note
-    let buffer = chromaticScale[(levelsToNote[random] + key) % 12].buffer;
+    // Play Note
+    const buffer = chromaticScale[(levelsToNote[random] + key) % 12].buffer;
     playBuffer(buffer, 3.5);
     randomNoteName = chromaticScale[levelsToNote[random]].name;
     console.log("Note name : ", randomNoteName);
   }
 
   function checkAnswerNote(e) {
-
-    let answer = e.target.dataset.note;
+    const answer = e.target.dataset.note;
     if (answer === randomNoteName) {
-      //We update answerNoteCorrect only at the first try
+      // We update answerNoteCorrect only at the first try
       if (numberOfTryNote === 0) {
         answerNoteCorrect = true;
-
       }
       e.target.classList.add("right");
       resultsNoteDisplay.innerText = `Well done, ${randomNoteName} is the right answer!`;
     } else {
-      //We update answerNoteCorrect only at the first try
+      // We update answerNoteCorrect only at the first try
       if (numberOfTryNote === 0) {
         answerNoteCorrect = false;
       }
       if (!answerNoteCorrect) {
-        //We want to "activate" the answer buttons only if we didn't already find the answer
+        // We want to "activate" the answer buttons only if we didn't already find the answer
         e.target.classList.add("wrong");
         resultsNoteDisplay.innerText = `Nope, ${randomNoteName} is not correct.`;
       }
@@ -267,21 +274,21 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function checkAnswerChord(e) {
-    let answer = e.target.dataset.chord;
+    const answer = e.target.dataset.chord;
     if (answer === randomChordName) {
-      //We update answerChordCorrect only at the first try
+      // We update answerChordCorrect only at the first try
       if (numberOfTryChord === 0) {
         answerChordCorrect = true;
       }
       e.target.classList.add("right");
       resultsChordDisplay.innerText = `Well done, ${randomChordName} is the right answer!`;
     } else {
-      //We update answerChordCorrect only at the first try
+      // We update answerChordCorrect only at the first try
       if (numberOfTryChord === 0) {
         answerChordCorrect = false;
       }
       if (!answerChordCorrect) {
-        //We want to "activate" the answer buttons only if we didn't already find the answer
+        // We want to "activate" the answer buttons only if we didn't already find the answer
         e.target.classList.add("wrong");
         resultsChordDisplay.innerText = `Nope, ${randomChordName} is not correct.`;
       }
@@ -294,64 +301,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function checkFullAnswer() {
     let success;
-    //Check if right answer for the 2 and first try.
-    if (numberOfTryNote === 1 && numberOfTryChord === 1 && answerNoteCorrect && answerChordCorrect && !gotResult) {
+    // Check if right answer for the 2 and first try.
+    if (
+      numberOfTryNote === 1 &&
+      numberOfTryChord === 1 &&
+      answerNoteCorrect &&
+      answerChordCorrect &&
+      !gotResult
+    ) {
       progress += 25;
       success = true;
       gotResult = true;
       updateProgress();
       sessionScore.rightAnswers += 1;
-
-    } else if ((numberOfTryNote === 1 && !answerNoteCorrect && !gotResult) || (numberOfTryChord === 1 && !answerChordCorrect && !gotResult)) {
-      //we did at least one try on the chord and the note. So we can say if it failed
+    } else if (
+      (numberOfTryNote === 1 && !answerNoteCorrect && !gotResult) ||
+      (numberOfTryChord === 1 && !answerChordCorrect && !gotResult)
+    ) {
+      // we did at least one try on the chord and the note. So we can say if it failed
       progress = progress - 100 < 0 ? 0 : progress - 100;
       success = false;
       gotResult = true;
       updateProgress();
       sessionScore.wrongAnswers += 1;
-
     }
-    console.log("numberOfTryNote,  numberOfTryChord : ", numberOfTryNote, numberOfTryChord);
+    console.log(
+      "numberOfTryNote,  numberOfTryChord : ",
+      numberOfTryNote,
+      numberOfTryChord
+    );
     if (numberOfTryNote >= 1 && numberOfTryChord >= 1) {
       nextBtn.classList.remove("hide");
     }
-    sessionResult.innerText = `${sessionScore.rightAnswers} of ${sessionScore.rightAnswers + sessionScore.wrongAnswers} correct`;
+    sessionResult.innerText = `${
+      sessionScore.rightAnswers
+    } of ${sessionScore.rightAnswers + sessionScore.wrongAnswers} correct`;
 
     if (success !== undefined) {
       sendDataToServer(success);
     }
   }
 
-  //display progress bar and move to level.
+  // display progress bar and move to level.
   function updateProgress() {
-    //checking if we level up!
+    // checking if we level up!
     if (progress === 400) {
       console.log("level up!");
-      if(level<11){
+      if (level < 11) {
         level += 1;
         levelChord = level < 8 ? 3 : level - 4;
       }
       progress = 0;
-      //display level up text
+      // display level up text
       levelUpDiv.style.display = "inline";
-      setTimeout(function() {
+      setTimeout(() => {
         levelUpDiv.style.display = "none";
       }, 3000);
       nextQuestion();
     }
-    progressDiv.style.width = progress / 4 + "%";
+    progressDiv.style.width = `${progress / 4}%`;
   }
 
-
-  //Show or Hide answer buttons according to level
+  // Show or Hide answer buttons according to level
   function showHideAnswerBtn() {
-    answersBtnNote.forEach(function(btn) {
+    answersBtnNote.forEach(btn => {
       btn.classList.remove("hide");
       if (btn.dataset.level >= level) {
         btn.classList.add("hide");
       }
     });
-    answersBtnChord.forEach(function(btn) {
+    answersBtnChord.forEach(btn => {
       btn.classList.remove("hide");
       console.log(levelChord);
       if (btn.dataset.level >= levelChord) {
@@ -363,26 +382,26 @@ document.addEventListener("DOMContentLoaded", function () {
   function sendDataToServer(success) {
     results.push({
       level: level - 4,
-      success: success
+      success
     });
     console.log(results);
-    //We are debouncing the post request,
-    //we store 5 results and then send so the server don't think we are doing a DDoS attack
+    // We are debouncing the post request,
+    // we store 5 results and then send so the server don't think we are doing a DDoS attack
     if (results.length === 5) {
-      //now we make the post request
+      // now we make the post request
       makePostRequest();
-      //Then we empty are results array.
+      // Then we empty are results array.
       results = [];
     }
   }
 
   function makePostRequest() {
     const params = {
-      results: results
+      results
     };
     const http = new XMLHttpRequest();
-    http.open('POST', '/chordnote', true);
-    http.setRequestHeader('Content-type', 'application/json');
+    http.open("POST", "/chordnote", true);
+    http.setRequestHeader("Content-type", "application/json");
     http.send(JSON.stringify(params)); // Make sure to stringify
     http.onload = function() {
       // Do whatever with response
@@ -393,23 +412,21 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  //we want to send the left of the data before we close the webpage.
-  window.addEventListener("beforeunload", function () {
-    if(results){
+  // we want to send the left of the data before we close the webpage.
+  window.addEventListener("beforeunload", () => {
+    if (results) {
       makePostRequest();
     }
   });
 
-  //add Event listeners..
+  // add Event listeners..
   function attachEventListener() {
-    answersBtnNote.forEach(function(btn) {
+    answersBtnNote.forEach(btn => {
       btn.addEventListener("click", checkAnswerNote);
     });
 
-    answersBtnChord.forEach(function(btn) {
+    answersBtnChord.forEach(btn => {
       btn.addEventListener("click", checkAnswerChord);
     });
-
   }
-
 });

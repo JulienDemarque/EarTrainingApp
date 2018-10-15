@@ -1,6 +1,3 @@
-/*jslint browser:true */
-/*jslint es6 */
-
 document.addEventListener("DOMContentLoaded", function() {
   "use strict";
 
@@ -9,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
   //Note: if the user in not login, the triggerButton does not exist!! this throw an error in the console.
   // We can maybe fix that by using classes conditional in ejs and display: none in css.
   triggerButton.addEventListener("click", displayGraph);
-
 
   //---------------------------------------------------
   /* callback of button */
@@ -21,14 +17,12 @@ document.addEventListener("DOMContentLoaded", function() {
     /* in the callback we will display the graph */
   }
 
-
-
   //---------------------------------------------------
   /* getting the json from server */
   function makeGetRequest() {
     const http = new XMLHttpRequest();
-    http.open('GET', '/graph', true);
-    http.setRequestHeader('Content-type', 'application/json');
+    http.open("GET", "/graph", true);
+    http.setRequestHeader("Content-type", "application/json");
     http.onload = function() {
       // Do whatever with response
       console.log("got json from server : ", JSON.parse(http.responseText));
@@ -44,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //-----------------------------------------------
     /* Format the database into an array we can work with: */
 
-    var dataset = [{
+    var dataset = [
+      {
         level: 0,
         scores: []
       },
@@ -98,17 +93,16 @@ document.addEventListener("DOMContentLoaded", function() {
           dataset[index].scores.push({
             date: key,
             score: level[key],
-            percent: (rightAnswers / (rightAnswers + wrongAnswers))
+            percent: rightAnswers / (rightAnswers + wrongAnswers)
           });
         }
       });
     });
 
-
     //---------------------------------
     /* This array will be for defining domain : */
     var datesForDomain = [];
-    dataFromMongodb.forEach(function(level, index) {
+    dataFromMongodb.forEach(function(level) {
       Object.keys(level).map(function(key) {
         if (key !== "level") {
           datesForDomain.push({
@@ -130,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const lineStroke = "2.5px";
     const lineStrokeHover = "4.5px";
     const otherLinesOpacityHover = "0.1";
-    const circleOpacity = '0.85';
+    const circleOpacity = "0.85";
     const circleOpacityOnLineHover = "0.25";
     const circleRadius = 3;
     const circleRadiusHover = 6;
@@ -144,11 +138,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //---------------------------------
     /* declare our scales: */
-    const xScale = d3.scaleTime()
-      .domain([d3.min(datesForDomain, d => parseTime(d.date)), d3.max(datesForDomain, d => parseTime(d.date))])
+    const xScale = d3
+      .scaleTime()
+      .domain([
+        d3.min(datesForDomain, d => parseTime(d.date)),
+        d3.max(datesForDomain, d => parseTime(d.date))
+      ])
       .range([paddingLeftRight, w - paddingLeftRight]);
 
-    const yScale = d3.scaleLinear()
+    const yScale = d3
+      .scaleLinear()
       .domain([1, 0])
       .range([paddingTopBottom, h - paddingTopBottom]);
 
@@ -156,7 +155,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //--------------------------------
     /* Basic style for the graph: */
-    const svg = d3.select("#graph")
+    const svg = d3
+      .select("#graph")
       .append("svg")
       .attr("width", w)
       .attr("height", h);
@@ -164,19 +164,22 @@ document.addEventListener("DOMContentLoaded", function() {
     //-----------------------------------------
     // Tring on lines
     /* Add line into SVG */
-    var line = d3.line()
+    var line = d3
+      .line()
       .x(d => xScale(parseTime(d.date)))
       .y(d => yScale(d.percent));
 
-    let lines = svg.append('g')
-      .attr('class', 'lines');
+    let lines = svg.append("g").attr("class", "lines");
 
-    lines.selectAll('.line-group')
-      .data(dataset).enter()
-      .append('g')
-      .attr('class', 'line-group')
+    lines
+      .selectAll(".line-group")
+      .data(dataset)
+      .enter()
+      .append("g")
+      .attr("class", "line-group")
       .on("mouseover", function(d, i) {
-        svg.append("text")
+        svg
+          .append("text")
           .attr("class", "title-text")
           .style("fill", color(i))
           .text("level : " + d.level)
@@ -184,34 +187,30 @@ document.addEventListener("DOMContentLoaded", function() {
           .attr("x", w / 2)
           .attr("y", paddingTopBottom - 5);
       })
-      .on("mouseout", function(d) {
+      .on("mouseout", function() {
         setTimeout(function() {
           svg.select(".title-text").remove();
         }, 100);
       })
-      .append('path')
-      .attr('class', 'line')
-      .attr('d', d => line(d.scores))
-      .style('stroke', (d, i) => color(i))
-      .style('opacity', lineOpacity)
+      .append("path")
+      .attr("class", "line")
+      .attr("d", d => line(d.scores))
+      .style("stroke", (d, i) => color(i))
+      .style("opacity", lineOpacity)
       .style("stroke-width", lineStroke)
-      .on("mouseover", function(d) {
-        d3.selectAll('.line')
-         .style('opacity', otherLinesOpacityHover);
-        d3.selectAll('.circle')
-         .style('opacity', circleOpacityOnLineHover);
+      .on("mouseover", function() {
+        d3.selectAll(".line").style("opacity", otherLinesOpacityHover);
+        d3.selectAll(".circle").style("opacity", circleOpacityOnLineHover);
         d3.select(this)
-          .style('opacity', lineOpacityHover)
+          .style("opacity", lineOpacityHover)
           .style("stroke-width", lineStrokeHover)
           .style("cursor", "pointer");
       })
-      .on("mouseout", function(d) {
-        d3.selectAll(".line")
-					.style('opacity', lineOpacity);
-        d3.selectAll('.circle')
-					.style('opacity', circleOpacity);
+      .on("mouseout", function() {
+        d3.selectAll(".line").style("opacity", lineOpacity);
+        d3.selectAll(".circle").style("opacity", circleOpacity);
         d3.select(this)
-          .style('opacity', lineOpacity)
+          .style("opacity", lineOpacity)
           .style("stroke-width", lineStroke)
           .style("cursor", "none");
       });
@@ -219,32 +218,36 @@ document.addEventListener("DOMContentLoaded", function() {
     //--------------------------------
     /* Adding axis: */
     const xAxis = d3.axisBottom(xScale).tickFormat(formatTime);
-    svg.append("g")
+    svg
+      .append("g")
       .attr("id", "x-axis")
       .attr("transform", `translate(0, ${h - paddingTopBottom})`)
       .call(xAxis.ticks(5));
 
-    const yAxis = d3.axisLeft(yScale)
-      .tickFormat(d3.format(".0%"));
-    svg.append("g")
+    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(".0%"));
+    svg
+      .append("g")
       .attr("id", "y-axis")
       .attr("transform", `translate(${paddingLeftRight}, 0)`)
       .call(yAxis)
-      .append('text')
+      .append("text")
       .attr("y", 15)
       .attr("x", -paddingLeftRight)
       .attr("transform", "rotate(-90)")
       .attr("fill", "#000")
-      .text("Percentage of success");;
+      .text("Percentage of success");
 
     //---------------------------------
     /* Add circles in the line */
-    lines.selectAll("circle-group")
-      .data(dataset).enter()
+    lines
+      .selectAll("circle-group")
+      .data(dataset)
+      .enter()
       .append("g")
       .style("fill", (d, i) => color(i))
       .selectAll("circle")
-      .data(d => d.scores).enter()
+      .data(d => d.scores)
+      .enter()
       .append("g")
       .attr("class", "circle")
       .on("mouseover", function(d) {
@@ -252,35 +255,37 @@ document.addEventListener("DOMContentLoaded", function() {
           .style("cursor", "pointer")
           .append("text")
           .attr("class", "text")
-          .text(`Correct: ${d.score.rightAnswers} \n
-               Wrong: ${d.score.wrongAnswers}`)
+          .text(
+            `Correct: ${d.score.rightAnswers} \n
+               Wrong: ${d.score.wrongAnswers}`
+          )
           .attr("x", d => xScale(parseTime(d.date)) - 50)
           .attr("y", d => yScale(d.percent) - 12);
       })
-      .on("mouseout", function(d) {
+      .on("mouseout", function() {
         d3.select(this)
           .style("cursor", "none")
           .transition()
           .duration(duration)
-          .selectAll(".text").remove();
+          .selectAll(".text")
+          .remove();
       })
       .append("circle")
       .attr("cx", d => xScale(parseTime(d.date)))
       .attr("cy", d => yScale(d.percent))
       .attr("r", circleRadius)
-      .style('opacity', circleOpacity)
-      .on("mouseover", function(d) {
+      .style("opacity", circleOpacity)
+      .on("mouseover", function() {
         d3.select(this)
           .transition()
           .duration(duration)
           .attr("r", circleRadiusHover);
       })
-      .on("mouseout", function(d) {
+      .on("mouseout", function() {
         d3.select(this)
           .transition()
           .duration(duration)
           .attr("r", circleRadius);
       });
   }
-
 });
