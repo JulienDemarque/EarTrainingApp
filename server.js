@@ -9,14 +9,13 @@ const database = {
 
 var express = require("express");
 var nodemailer = require("nodemailer");
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
 // Build the app
 var app = express();
 var mongoose = require("mongoose");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
-
 
 //-----------DATABASE SETUP-----------------
 
@@ -37,19 +36,23 @@ var Score = mongoose.model("Score", scoreSchema);
 
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 app.use(express.static("public"));
 
 //PASSPORT CONFIGURATION
 console.log(process.env.SECRETHASHCODE);
-app.use(require("express-session")({
-  //We created a environnent variable with same value locally and on heroku for safety.
-  secret: process.env.SECRETHASHCODE,
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  require("express-session")({
+    //We created a environnent variable with same value locally and on heroku for safety.
+    secret: process.env.SECRETHASHCODE,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -61,19 +64,17 @@ app.use(function(req, res, next) {
   next();
 });
 
-
-
 //----------NORMAL ROUTES -----------------------
 app.get("/", function(req, res) {
-  res.render('home.ejs');
+  res.render("home.ejs");
 });
 
 app.get("/chordapp", function(req, res) {
-  res.render('chordapp.ejs');
+  res.render("chordapp.ejs");
 });
 
 app.get("/chordnote", function(req, res) {
-  res.render('chordnote.ejs');
+  res.render("chordnote.ejs");
 });
 
 //------------ UPDATE DATABASE ROUTE ------------
@@ -92,20 +93,22 @@ app.post("/chordnote", isLoggedIn, function(req, res) {
   let date = today.getDate();
   let fullDate = "" + date + "-" + month + "-" + year;
   //We are about to connect to database and retrive the user results...
-  Score.find({
-    "name": req.user.username
-  }, function(err, score) {
-    if (err) {
-      console.log("something went wrong in the update");
-    } else {
-      console.log(score);
-      //we get an array of found documents, even if there is only one (hopefully!)
-      console.log("Find on mongodb line 97 : ", score[0].results.level);
-      database.level = score[0].results.level;
-      updateDatabase(req.user.username);
-
+  Score.find(
+    {
+      name: req.user.username
+    },
+    function(err, score) {
+      if (err) {
+        console.log("something went wrong in the update");
+      } else {
+        console.log(score);
+        //we get an array of found documents, even if there is only one (hopefully!)
+        console.log("Find on mongodb line 97 : ", score[0].results.level);
+        database.level = score[0].results.level;
+        updateDatabase(req.user.username);
+      }
     }
-  });
+  );
 
   function updateDatabase(username) {
     dataFromClient.forEach(function(result) {
@@ -132,21 +135,26 @@ app.post("/chordnote", isLoggedIn, function(req, res) {
     });
 
     //we modified our database object, now we put it in the mongo db
-    Score.findOneAndUpdate({
-      "name": username
-    }, {
-      $set: {
-        "results": database
+    Score.findOneAndUpdate(
+      {
+        name: username
+      },
+      {
+        $set: {
+          results: database
+        }
+      },
+      {
+        new: true
+      },
+      function(err, user) {
+        if (err) {
+          console.log("something went wrong in the update");
+        } else {
+          console.log(user);
+        }
       }
-    }, {
-      new: true
-    }, function(err, user) {
-      if (err) {
-        console.log("something went wrong in the update");
-      } else {
-        console.log(user);
-      }
-    });
+    );
   }
 
   //console.log(database.level[0][fullDate]);
@@ -158,18 +166,21 @@ app.post("/chordnote", isLoggedIn, function(req, res) {
 app.get("/graph", isLoggedIn, function(req, res) {
   let myJson;
   //fetching data from database:
-  Score.find({
-    "name": req.user.username
-  }, function(err, score) {
-    if (err) {
-      console.log("something went wrong in the update");
-    } else {
-      //we get an array of found documents, even if there is only one (hopefully!)
-      console.log("Find on mongodb line 97 : ", score[0].results.level);
-      myJson = score[0].results.level;
+  Score.find(
+    {
+      name: req.user.username
+    },
+    function(err, score) {
+      if (err) {
+        console.log("something went wrong in the update");
+      } else {
+        //we get an array of found documents, even if there is only one (hopefully!)
+        console.log("Find on mongodb line 97 : ", score[0].results.level);
+        myJson = score[0].results.level;
+      }
+      res.json(myJson);
     }
-    res.json(myJson);
-  });
+  );
 });
 
 //------------------- AUTH ROUTES------------------
@@ -184,7 +195,7 @@ app.post("/register", function(req, res) {
   var newUser = new User({
     username: req.body.username
   });
-  User.register(newUser, req.body.password, function(err, user) {
+  User.register(newUser, req.body.password, function(err) {
     if (err) {
       console.log(err);
       return res.render("register.ejs");
@@ -200,29 +211,41 @@ app.post("/register", function(req, res) {
 function createEmptyScore(username) {
   //Ok this is some weirdness, mongo has converted my empty object literals to null, so I filled them with one bullshit property
   const newResults = {
-    level: [{
-      level: 0
-    }, {
-      level: 1
-    }, {
-      level: 2
-    }, {
-      level: 3
-    }, {
-      level: 4
-    }, {
-      level: 5
-    }, {
-      level: 6
-    }, {
-      level: 7
-    }, {
-      level: 8
-    }, {
-      level: 9
-    }, {
-      level: 10
-    }]
+    level: [
+      {
+        level: 0
+      },
+      {
+        level: 1
+      },
+      {
+        level: 2
+      },
+      {
+        level: 3
+      },
+      {
+        level: 4
+      },
+      {
+        level: 5
+      },
+      {
+        level: 6
+      },
+      {
+        level: 7
+      },
+      {
+        level: 8
+      },
+      {
+        level: 9
+      },
+      {
+        level: 10
+      }
+    ]
   };
   var emptyScore = new Score({
     name: username,
@@ -244,10 +267,13 @@ app.get("/login", function(req, res) {
 });
 
 //handling login logic
-app.post("/login", passport.authenticate("local", {
-  successRedirect: "/chordnote",
-  failureRedirect: "/login"
-}), function(req, res) {});
+app.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/chordnote",
+    failureRedirect: "/login"
+  })
+);
 
 // logout route
 app.get("/logout", function(req, res) {
@@ -267,11 +293,11 @@ function isLoggedIn(req, res, next) {
 //---------------------------CONTACT ROUTES ----------
 
 app.get("/contact", function(req, res) {
-  res.render('contact.ejs');
+  res.render("contact.ejs");
 });
 
 app.get("/confirm", function(req, res) {
-  res.render('confirm.ejs');
+  res.render("confirm.ejs");
 });
 
 app.post("/contact", function(req, res) {
@@ -289,8 +315,6 @@ app.post("/contact", function(req, res) {
     }
   });
 
-
-
   var helperOptions = {
     //email options
     from: name + "<" + email + ">",
@@ -299,7 +323,8 @@ app.post("/contact", function(req, res) {
     html: "Message from : " + email + "<br/><br/>" + comment // body
   };
 
-  smtpTransport.sendMail(helperOptions, function(error, info) { //callback
+  smtpTransport.sendMail(helperOptions, function(error) {
+    //callback
     if (error) {
       return console.log(error);
     } else {
@@ -311,8 +336,6 @@ app.post("/contact", function(req, res) {
 
   res.redirect("/confirm");
 });
-
-
 
 app.listen(process.env.PORT || 8080, process.env.IP, function() {
   console.log("server started");
