@@ -1,5 +1,0 @@
-To start the database on my computer, run the following command in the user's home directory (juliendemarque):
-mongod --dbpath ~/data
-
-Note: You can create a mongo db anywhere you want, just change the path accordingly,
-and create the environment variables pointing to it.
