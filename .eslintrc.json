@@ -1,0 +1,17 @@
+{
+  "extends": ["jquery", "plugin:prettier/recommended"],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jquery": true
+  },
+  "rules": {
+    "quotes": "off",
+    "no-console": "off",
+    "no-use-before-define": "off"
+  },
+  "globals": {
+    "d3": true
+  }
+}
