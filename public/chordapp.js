@@ -1,8 +1,4 @@
 $(document).ready(() => {
-  // Things to do. When modify input again, the check button doesn't show the new changes... DONE
-  // add pdf open button DONE
-  // add info button DONE
-
   // GUIDE APPEAR DISAPPEAR
   document.getElementById("guideLink").addEventListener("click", () => {
     $(".info").removeClass("invisible");
