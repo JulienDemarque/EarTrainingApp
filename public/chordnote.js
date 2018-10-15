@@ -346,7 +346,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateProgress() {
     // checking if we level up!
     if (progress === 400) {
-      console.log("level up!");
       if (level < 11) {
         level += 1;
         levelChord = level < 8 ? 3 : level - 4;
@@ -372,7 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     answersBtnChord.forEach(btn => {
       btn.classList.remove("hide");
-      console.log(levelChord);
       if (btn.dataset.level >= levelChord) {
         btn.classList.add("hide");
       }
