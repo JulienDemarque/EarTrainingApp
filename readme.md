@@ -7,16 +7,18 @@ You can see the demo of the app here: https://chord-progression-ear-training.her
 
 The app has actually two modes, a chord-progression game and a chord-and-note game.
 The chord-and-note game let you see your progress day-by-day if you login.
+<br />
 
 ## How to run it locally
 
-clone the repo.
-setup a mongodb database locally.
-setup the environment variables.
-start the database `mongod --dbpath ~/[path to your database]`
-`npm install`
-`npm start`
+clone the repo.<br />
+setup a mongodb database locally.<br />
+setup the environment variables.<br />
+start the database `mongod --dbpath ~/[path to your database]`<br />
+`npm install`<br />
+`npm start`<br />
 visit http://localhost:8080
+<br />
 
 ### Environment Variables Setup
 
@@ -29,11 +31,13 @@ To start the database on my computer, I run the following command in the user's 
 `mongod --dbpath ~/data`
 
 My env variable DATABASEURL is `mongodb://localhost/test` but you can give it a better name like mongodb://localhost/eartrainingapp`
+<br />
 
 ## How to contribute
 
 fork the repo.
 clone it locally and make your changes.
 make sure to run `npm run lint` before any PR.
+<br />
 
 [![Known Vulnerabilities](https://snyk.io/test/github/JulienDemarque/EarTrainingApp/badge.svg?targetFile=package.json)](https://snyk.io/test/github/JulienDemarque/EarTrainingApp?targetFile=package.json)
