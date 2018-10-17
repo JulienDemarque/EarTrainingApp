@@ -19,12 +19,6 @@ var regularRoutes = require("./routes/regular");
 
 //-----------DATABASE SETUP-----------------
 
-// Note: test is the default db when we open the mongo shell, I could have created another one
-//mongoose.connect("mongodb://localhost/test");
-//I should have give an other name than "mydatabase"...
-//the URI of the mlab in store in process.env.DATABASEURL in heroku (see settings)
-
-//we use environnement variables eventually
 console.log(process.env.DATABASEURL);
 mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.json());
