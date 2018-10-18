@@ -6,10 +6,11 @@ var express = require("express");
 var bodyParser = require("body-parser");
 // Build the app
 var app = express();
-var mongoose = require("mongoose");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
+
+var connectToDB = require("./infra/dbsetup");
 
 var authRoutes = require("./routes/auth");
 var contactRoutes = require("./routes/contact");
@@ -17,10 +18,8 @@ var graphRoutes = require("./routes/graph");
 var databaseRoute = require("./routes/database");
 var regularRoutes = require("./routes/regular");
 
-//-----------DATABASE SETUP-----------------
+connectToDB();
 
-console.log(process.env.DATABASEURL);
-mongoose.connect(process.env.DATABASEURL);
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
