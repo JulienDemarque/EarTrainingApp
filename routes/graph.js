@@ -16,8 +16,6 @@ router.get("/", isLoggedIn, function(req, res) {
       if (err) {
         console.log("something went wrong in the update");
       } else {
-        //we get an array of found documents, even if there is only one (hopefully!)
-        console.log("Find on mongodb line 97 : ", score[0].results.level);
         myJson = score[0].results.level;
       }
       res.json(myJson);
