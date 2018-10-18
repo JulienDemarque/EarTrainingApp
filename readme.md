@@ -1,4 +1,4 @@
-# EarTrainingApp
+# EarTrainingApp &middot; [![Build Status](https://travis-ci.com/JulienDemarque/EarTrainingApp.svg?branch=master)](https://travis-ci.com/JulienDemarque/EarTrainingApp) [![Known Vulnerabilities](https://snyk.io/test/github/JulienDemarque/EarTrainingApp/badge.svg?targetFile=package.json)](https://snyk.io/test/github/JulienDemarque/EarTrainingApp?targetFile=package.json)
 
 ## Presentation
 
@@ -39,5 +39,3 @@ fork the repo.
 clone it locally and make your changes.
 make sure to run `npm run lint` before any PR.
 <br />
-
-[![Known Vulnerabilities](https://snyk.io/test/github/JulienDemarque/EarTrainingApp/badge.svg?targetFile=package.json)](https://snyk.io/test/github/JulienDemarque/EarTrainingApp?targetFile=package.json)
